@@ -1,0 +1,11 @@
+﻿.field-validation-error {
+    color: red;
+}
+
+#footer {
+    height: 50px;
+}
+
+.pagination_num {
+    margin: 29px 0;
+}

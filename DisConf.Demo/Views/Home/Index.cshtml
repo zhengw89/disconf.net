@@ -1,0 +1,58 @@
+﻿@using DisConf.Client.Manager
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<table>
+    <tbody>
+        <tr>
+            <td>App</td>
+            <td>@ClientManager.Instance.Config.App</td>
+        </tr>
+        <tr>
+            <td>Env</td>
+            <td>@ClientManager.Instance.Config.Env</td>
+        </tr>
+        <tr>
+            <td>Host</td>
+            <td>@ClientManager.Instance.Config.Host</td>
+        </tr>
+        <tr>
+            <td>ZkHost</td>
+            <td>@ClientManager.Instance.Config.ZkHost</td>
+        </tr>
+        <tr>
+            <td>LocalPath</td>
+            <td>@ClientManager.Instance.Config.LocalPath</td>
+        </tr>
+        <tr>
+            <td>RetryTimes</td>
+            <td>@ClientManager.Instance.Config.RetryTimes</td>
+        </tr>
+        <tr>
+            <td>RetrySleepSeconds</td>
+            <td>@ClientManager.Instance.Config.RetrySleepSeconds</td>
+        </tr>
+    </tbody>
+</table>
+
+<hr />
+
+<table>
+    <thead>
+        <th>Key</th>
+        <th>Value</th>
+    </thead>
+    <tbody>
+        @foreach (var config in ClientManager.Instance.Configs)
+        {
+            <tr>
+                <td>@config.Key</td>
+                <td>@config.Value</td>
+            </tr>
+        }
+    </tbody>
+</table>

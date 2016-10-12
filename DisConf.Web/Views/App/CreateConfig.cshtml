@@ -1,0 +1,68 @@
+﻿@model DisConf.Web.Service.Model.BizResult<DisConf.Web.Models.Config.CreateConfigModel>
+@{
+    ViewBag.Title = "创建配置项";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>创建配置项</h2>
+
+<div>
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">Error:</span>
+            @ViewBag.Error
+        </div>
+    }
+
+    @using (Html.BeginForm("CreateConfig", "App", FormMethod.Post, new { @class = "form-horizontal" }))
+    {
+        @Html.HiddenFor(m => m.Data.AppId)
+        @Html.HiddenFor(m => m.Data.EnvId)
+
+        <div class="form-group">
+            <div class="col-sm-2 control-label">
+                @Html.Label("APP名称")
+            </div>
+            <div class="col-sm-10 control-label">
+                @Html.Label(Model.Data.AppName, new { @class = "pull-left" })
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="col-sm-2 control-label">
+                @Html.Label("环境")
+            </div>
+            <div class="col-sm-10 control-label">
+                @Html.Label(Model.Data.EnvName, new { @class = "pull-left" })
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="col-sm-2 control-label">
+                @Html.LabelFor(m => m.Data.Name)
+            </div>
+            <div class="col-sm-10">
+                @Html.TextBoxFor(m => m.Data.Name, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Data.Name)
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="col-sm-2 control-label">
+                @Html.LabelFor(m => m.Data.Value)
+            </div>
+            <div class="col-sm-10">
+                @Html.TextBoxFor(m => m.Data.Value, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Data.Value)
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="col-sm-2 control-label">
+                <button class="btn btn-primary" type="submit">创建</button>
+            </div>
+        </div>
+    }
+</div>

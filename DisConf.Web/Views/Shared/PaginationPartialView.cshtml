@@ -1,0 +1,12 @@
+﻿@using DisConf.Web.Helper.CustomHtmlHelper
+@model DisConf.Web.Models.Shared.PaginationViewModel
+<div class="row">
+    <div class="col-sm-10">
+        <ul class="pagination">
+            @Html.PageLinks(@Model.PagedList, x => Model.GenerateUrlFunc(x))
+        </ul>
+    </div>
+    <div class="col-sm-2 text-right">
+        <label class="pagination_num">@string.Format("共{0}页，共{1}条", Model.PagedList.TotalPages, Model.PagedList.TotalItems)</label>
+    </div>
+</div>

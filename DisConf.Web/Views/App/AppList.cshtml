@@ -1,0 +1,40 @@
+﻿@using DisConf.Web.Models.Shared
+@model DisConf.Web.Service.Model.BizResult<DisConf.Web.Model.PageList<DisConf.Web.Model.App>>
+@{
+    ViewBag.Title = "APP列表";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>APP列表</h2>
+
+@if (Model.HasError)
+{
+    <h3>错误：@Model.Error.Message</h3>
+}
+else
+{
+    @Html.RouteLink("创建APP", "CreateApp", new { }, new { @class = "btn btn-default" })
+    <table class="table table-striped table-hover ">
+        <thead>
+            <th>ID</th>
+            <th>名称</th>
+            <th>描述</th>
+        </thead>
+        <tbody>
+            @foreach (var app in Model.Data.Items)
+            {
+                <tr>
+                    <td>@app.Id</td>
+                    <td>@Html.RouteLink(app.Name, "AppDetail", new { appName = app.Name }, new { })</td>
+                    <td>@app.Description</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    
+    @Html.Partial("PaginationPartialView", new PaginationViewModel()
+    {
+        PagedList = Model.Data,
+        GenerateUrlFunc = (index) => Url.Action("AppList", new { pageIndex = index })
+    })
+}

@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/jquery-1.11.3.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap/bootstrap.min.js")" type="text/javascript"></script>
+    @*<script src="@Url.Content("~/Scripts/bootstrap/bootstrap-select.min.js")" type="text/javascript"></script>*@
+
+    @RenderSection("script", false)
+
+    <link href="@Url.Content("~/Content/bootstrap/css/bootstrap.min.css")" rel="stylesheet" type="text/css" />
+    @*<link href="@Url.Content("~/Content/bootstrap/css/bootstrap-select.min.css")" rel="stylesheet" type="text/css" />*@
+    <link href="@Url.Content("~/Content/bootstrap/css/bootstrap-theme.min.css")" rel="stylesheet" type="text/css"/>
+
+    @RenderSection("style", false)
+</head>
+<body>
+    <div class="container">
+        <div id="header">
+            <div class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <div class="navbar-brand">
+                            管理后台
+                        </div>
+                    </div>
+                    <div id="navbar" class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav">
+                            <li>
+                                @Html.RouteLink("APP", "Apps", new { })
+                            </li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li>
+                                @*@Html.ActionLink("注销", "LogOff", "Login")*@
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="body">
+            @RenderBody()
+        </div>
+        <div id="footer">
+        </div>
+    </div>
+</body>
+</html>

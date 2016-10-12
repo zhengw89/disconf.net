@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A7BB921C-A161-4E65-8C47-6036CC024D92}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DisConf.Web.Service</RootNamespace>
+    <AssemblyName>DisConf.Web.Service</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CommonProcess, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZW.CommonProcess.1.1.0\lib\net40\CommonProcess.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="ZooKeeperNet, Version=3.4.6.1, Culture=neutral, PublicKeyToken=fefd2c046da35b56, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZooKeeper.Net.3.4.6.2\lib\net40\ZooKeeperNet.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BaseService.cs" />
+    <Compile Include="Core\DisConfBaseDependentProvider.cs" />
+    <Compile Include="Core\Model\DisConfProcessResult.cs" />
+    <Compile Include="Core\Process\DisConfBaseCoreOperateProcess.cs" />
+    <Compile Include="Core\Process\DisConfOperateProcess.cs" />
+    <Compile Include="Core\DisConfProcessConfig.cs" />
+    <Compile Include="Core\Model\DisConfProcessError.cs" />
+    <Compile Include="Core\IDisConfProcessConfig.cs" />
+    <Compile Include="Core\Model\ErrorConverter.cs" />
+    <Compile Include="Core\Process\DisConfQueryProcess.cs" />
+    <Compile Include="Core\Process\DisConfWithResultOperateProcess.cs" />
+    <Compile Include="Factory\IServiceContainer.cs" />
+    <Compile Include="Factory\ServiceContainer.cs" />
+    <Compile Include="Factory\ServiceLocator.cs" />
+    <Compile Include="Interfaces\IAppService.cs" />
+    <Compile Include="Interfaces\IConfigService.cs" />
+    <Compile Include="Interfaces\IEnvService.cs" />
+    <Compile Include="Interfaces\IUserService.cs" />
+    <Compile Include="Model\BizError.cs" />
+    <Compile Include="Model\BizResult.cs" />
+    <Compile Include="OperateDependentFactory\DependentContainer.cs" />
+    <Compile Include="OperateDependentFactory\IDependentContainer.cs" />
+    <Compile Include="OperateDependentFactory\OperateDependentLocator.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceInitializer.cs" />
+    <Compile Include="Services\App\AppOperator\AppByConditionQueryer.cs" />
+    <Compile Include="Services\App\AppOperator\AppByIdQueryer.cs" />
+    <Compile Include="Services\App\AppOperator\AppByNameQueryer.cs" />
+    <Compile Include="Services\App\AppOperator\AppCreator.cs" />
+    <Compile Include="Services\App\AppOperator\AppDeleter.cs" />
+    <Compile Include="Services\App\AppOperator\AppUpdater.cs" />
+    <Compile Include="Services\App\AppService.cs" />
+    <Compile Include="Services\Config\ConfigOperator\ConfigByAppAndEnvQueryer.cs" />
+    <Compile Include="Services\Config\ConfigOperator\ConfigByIdQueryer.cs" />
+    <Compile Include="Services\Config\ConfigOperator\ConfigByConditionQueryer.cs" />
+    <Compile Include="Services\Config\ConfigOperator\ConfigByNameQueryer.cs" />
+    <Compile Include="Services\Config\ConfigOperator\ConfigCreator.cs" />
+    <Compile Include="Services\Config\ConfigOperator\ConfigDeleter.cs" />
+    <Compile Include="Services\Config\ConfigOperator\ConfigValueUpdater.cs" />
+    <Compile Include="Services\Config\ConfigService.cs" />
+    <Compile Include="Services\Env\EnvOperator\AllEnvQueryer.cs" />
+    <Compile Include="Services\Env\EnvOperator\EnvByIdQueryer.cs" />
+    <Compile Include="Services\Env\EnvOperator\EnvByNameQueryer.cs" />
+    <Compile Include="Services\Env\EnvService.cs" />
+    <Compile Include="Services\UserService.cs" />
+    <Compile Include="Zk\ZkInitializer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DisConf.Utility\DisConf.Utility.csproj">
+      <Project>{41fc3b13-4901-4bc5-8a16-3333023f4b70}</Project>
+      <Name>DisConf.Utility</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DisConf.Web.Model\DisConf.Web.Model.csproj">
+      <Project>{d58cd0c6-ab4b-4818-b4db-17f636c81695}</Project>
+      <Name>DisConf.Web.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DisConf.Web.Repository\DisConf.Web.Repository.csproj">
+      <Project>{bd0b8e49-15d5-4baa-9758-23795ee8b612}</Project>
+      <Name>DisConf.Web.Repository</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
