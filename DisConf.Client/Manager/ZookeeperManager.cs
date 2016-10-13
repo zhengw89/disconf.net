@@ -162,61 +162,55 @@ namespace DisConf.Client.Manager
         {
             Log.InfoFormat("监控变化 {0}", @event.ToString());
 
-            switch (@event.State)
+            if (@event.State == KeeperState.SyncConnected && @event.Type == EventType.None)
             {
-                case KeeperState.SyncConnected:
-                    if (this._countdown.CurrentCount != 0)
-                    {
-                        this._countdown.Signal();
-                    }
-                    if (this.ZookeeperConnectedHandler != null)
-                    {
-                        this.ZookeeperConnectedHandler(this);
-                    }
-                    break;
-                case KeeperState.Disconnected:
-                    if (this.ZookeeperDisconnectedHandler != null)
-                    {
-                        this.ZookeeperDisconnectedHandler(this);
-                    }
-                    break;
-                case KeeperState.Expired:
-                    this.ReConnect();
-                    break;
-                default:
-                    break;
+                if (this._countdown.CurrentCount != 0)
+                {
+                    this._countdown.Signal();
+                }
+                if (this.ZookeeperConnectedHandler != null)
+                {
+                    this.ZookeeperConnectedHandler(this);
+                }
             }
-
-            switch (@event.Type)
+            else if (@event.State == KeeperState.SyncConnected && @event.Type == EventType.NodeDataChanged)
             {
-                case EventType.NodeDataChanged:
+                if (@event.Path.Equals(this._addPath))
+                {
+                    if (this.NodeAdded != null)
+                    {
+                        var data = _zk.GetData(this._addPath, false, null);
+                        this.NodeAdded(this, System.Text.Encoding.Default.GetString(data));
+                    }
+                }
+                else if (@event.Path.Equals(this._delPath))
+                {
+                    if (this.NodeRemove != null)
+                    {
+                        var data = _zk.GetData(this._delPath, false, null);
+                        this.NodeRemove(this, System.Text.Encoding.Default.GetString(data));
+                    }
+                }
+                else if (this.NodeValueChangedHandler != null)
+                {
+                    string app = null, env = null, name = null;
 
-                    if (@event.Path.Equals(this._addPath))
+                    if (ZooPathManager.TryGetInfo(@event.Path, out app, out env, out name))
                     {
-                        if (this.NodeAdded != null)
-                        {
-                            var data = _zk.GetData(this._addPath, false, null);
-                            this.NodeAdded(this, System.Text.Encoding.Default.GetString(data));
-                        }
+                        this.NodeValueChangedHandler(app, env, name);
                     }
-                    else if (@event.Path.Equals(this._delPath))
-                    {
-                        if (this.NodeRemove != null)
-                        {
-                            var data = _zk.GetData(this._delPath, false, null);
-                            this.NodeRemove(this, System.Text.Encoding.Default.GetString(data));
-                        }
-                    }
-                    else if (this.NodeValueChangedHandler != null)
-                    {
-                        string app = null, env = null, name = null;
-
-                        if (ZooPathManager.TryGetInfo(@event.Path, out app, out env, out name))
-                        {
-                            this.NodeValueChangedHandler(app, env, name);
-                        }
-                    }
-                    break;
+                }
+            }
+            else if (@event.State == KeeperState.Disconnected)
+            {
+                if (this.ZookeeperDisconnectedHandler != null)
+                {
+                    this.ZookeeperDisconnectedHandler(this);
+                }
+            }
+            else if (@event.State == KeeperState.Expired)
+            {
+                this.ReConnect();
             }
 
             //重新监视当前节点
