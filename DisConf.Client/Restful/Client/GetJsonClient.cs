@@ -14,7 +14,7 @@ namespace DisConf.Client.Restful.Client
 
         public T Call<T>() where T : class
         {
-            var wc = new WebClient();
+            var wc = new WebClient { Encoding = System.Text.Encoding.UTF8 };
             var json = wc.DownloadString(this._url);
 
             return JsonConvert.DeserializeObject<T>(json);
