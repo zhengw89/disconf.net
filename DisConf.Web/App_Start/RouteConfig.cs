@@ -41,6 +41,18 @@ namespace DisConf.Web
             );
 
             routes.MapRoute(
+               name: "Configs",
+               url: "Configs/{appName}/{envName}",
+               defaults: new { controller = "App", action = "GetConfigs", appName = UrlParameter.Optional, envName = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
+               name: "ForceRefreshConfigs",
+               url: "ForceRefreshConfigs/{appName}/{envName}",
+               defaults: new { controller = "App", action = "ForceRefreshConfig", appName = UrlParameter.Optional, envName = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{pageIndex}",
                 defaults: new { controller = "App", action = "AppList", pageIndex = UrlParameter.Optional }

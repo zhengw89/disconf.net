@@ -89,4 +89,41 @@ else
         PagedList = Model.Data.Configs,
         GenerateUrlFunc = (index) => Url.Action("App", new { pageIndex = index })
     })
+
+    <div class="row">
+        <div class="col-md-6">
+            @Html.RouteLink("所有配置项", "Configs", new { appName = Model.Data.AppInfo.Name, envName = Model.Data.CurrentEnv.Name }, new { @class = "btn btn-default" })
+        </div>
+        <div class="col-md-6" style="text-align: right">
+            <button type="button" class="btn btn-danger pull-right" data-toggle="modal" data-target="#tRefreshModal">
+                强制刷新
+            </button>
+        </div>
+    </div>
+    
+    
+    <div id="tRefreshModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="tRefreshModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                @using (Html.BeginForm("ForceRefreshConfig", "App", FormMethod.Post, null))
+                {
+                    @Html.Hidden("appName", Model.Data.AppInfo.Name)
+                    @Html.Hidden("envName", Model.Data.CurrentEnv.Name)
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="tRefreshModalLabel">强制刷新配置
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        确定要 <em>刷新</em> <strong>@string.Format("应用:{0}  环境:{1}", Model.Data.AppInfo.Name, Model.Data.CurrentEnv.Name)</strong> ？
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button class="btn btn-primary" type="submit">确定</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
 }

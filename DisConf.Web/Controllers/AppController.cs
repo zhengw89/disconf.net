@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
+using DisConf.Web.Helper.CustomResult;
 using DisConf.Web.Model;
 using DisConf.Web.Models.App;
 using DisConf.Web.Models.Config;
@@ -176,6 +177,34 @@ namespace DisConf.Web.Controllers
 
         #endregion
 
+        #region Get
+
+        [HttpGet]
+        public ActionResult GetConfigs(string appName, string envName)
+        {
+            var app = base.ResolveService<IAppService>().GetByName(appName);
+            if (app.HasError)
+            {
+                return new Http404Result();
+            }
+
+            var env = base.ResolveService<IEnvService>().GetEnvByName(envName);
+            if (env.HasError)
+            {
+                return new Http404Result();
+            }
+
+            var configs = base.ResolveService<IConfigService>().GetAll(app.Data.Id, env.Data.Id);
+            if (configs.HasError)
+            {
+                return new Http404Result();
+            }
+
+            return Json(configs.Data.ToDictionary(a => a.Name, a => a.Value), JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion
+
         #region Post
 
         [HttpPost]
@@ -288,6 +317,29 @@ namespace DisConf.Web.Controllers
             {
                 return RedirectToRoute("Apps");
             }
+        }
+
+        [HttpPost]
+        public ActionResult ForceRefreshConfig(string appName, string envName)
+        {
+            var app = base.ResolveService<IAppService>().GetByName(appName);
+            if (app.HasError)
+            {
+                throw new NotImplementedException();
+            }
+
+            var env = base.ResolveService<IEnvService>().GetEnvByName(envName);
+            if (env.HasError)
+            {
+                throw new NotImplementedException();
+            }
+
+            if (!base.ResolveService<IConfigService>().ForceRefresh(app.Data.Id, appName, env.Data.Id, envName))
+            {
+                throw new NotImplementedException();
+            }
+
+            return RedirectToRoute("AppDetail", new { appName = appName, envName = envName, pageIndex = 1 });
         }
 
         #endregion

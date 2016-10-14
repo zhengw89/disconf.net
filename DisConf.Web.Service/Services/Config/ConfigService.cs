@@ -1,8 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Permissions;
+using System.Threading;
+using DisConf.Utility.Path;
 using DisConf.Web.Model;
 using DisConf.Web.Service.Interfaces;
 using DisConf.Web.Service.Model;
 using DisConf.Web.Service.Services.Config.ConfigOperator;
+using ZooKeeperNet;
 
 namespace DisConf.Web.Service.Services.Config
 {
@@ -95,6 +101,43 @@ namespace DisConf.Web.Service.Services.Config
 
                 return base.ExeQueryProcess(queryer);
             });
+        }
+
+        public bool ForceRefresh(int appId, string appName, int envId, string envName)
+        {
+            var configs = this.GetAll(appId, envId);
+            if (configs.HasError) return false;
+
+            if (configs.Data != null && configs.Data.Any())
+            {
+                using (var zk = new ZooKeeper(this.Config.ZookeeperHost, new TimeSpan(0, 0, 5, 0), null))
+                {
+                    int retry = 3;
+                    for (int i = 0; i < retry; i++)
+                    {
+                        if (Equals(zk.State, ZooKeeper.States.CONNECTED))
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            Thread.Sleep(new TimeSpan(0, 0, 1));
+                        }
+                    }
+                    if (!Equals(zk.State, ZooKeeper.States.CONNECTED))
+                    {
+                        return false;
+                    }
+
+                    foreach (var config in configs.Data)
+                    {
+                        var nodePath = ZooPathManager.GetPath(appName, envName, config.Name);
+                        zk.SetData(nodePath, config.Value.GetBytes(), -1);
+                    }
+                }
+            }
+
+            return true;
         }
     }
 }
