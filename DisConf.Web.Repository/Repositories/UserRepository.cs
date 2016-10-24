@@ -12,14 +12,17 @@ namespace DisConf.Web.Repository.Repositories
         {
         }
 
+        public bool Exists(string userName)
+        {
+            var sql=new Sql().Select("COUNT(*)").From("T_USER").Where("USER_Name = @0", userName);
+            return base.Db.ExecuteScalar<long>(sql) > 0;
+        }
+
         public User GetByUserName(string userName)
         {
-            var sql = new Sql();
-            sql.Where("USER_Name = @0", userName);
+            var sql = new Sql().Where("USER_Name = @0", userName);
 
             var tUser = base.Db.SingleOrDefault<T_USER>(sql);
-
-            if (tUser == null) return null;
             return AutoMapper.Mapper.Map<User>(tUser);
         }
     }

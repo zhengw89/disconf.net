@@ -9,6 +9,36 @@ namespace DisConf.Web
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            RegisterAuthorizeRoutes(routes);
+
+            RegisterAppRoutes(routes);
+
+            RegisterConfigRoutes(routes);
+
+            routes.MapRoute(
+                name: "Default",
+                url: "{controller}/{action}/{pageIndex}",
+                defaults: new { controller = "App", action = "AppList", pageIndex = UrlParameter.Optional }
+            );
+        }
+
+        private static void RegisterAuthorizeRoutes(RouteCollection routes)
+        {
+            routes.MapRoute(
+                name: "Login",
+                url: "Login",
+                defaults: new { controller = "Authorize", action = "Login" }
+            );
+
+            routes.MapRoute(
+                name: "LogOff",
+                url: "LogOff",
+                defaults: new { controller = "Authorize", action = "LogOff" }
+            );
+        }
+
+        private static void RegisterAppRoutes(RouteCollection routes)
+        {
             routes.MapRoute(
                 name: "Apps",
                 url: "Apps/{pageIndex}",
@@ -27,7 +57,10 @@ namespace DisConf.Web
                 url: "Detail/{appName}/{envName}/{pageIndex}",
                 defaults: new { controller = "App", action = "App", appName = UrlParameter.Optional, envName = UrlParameter.Optional, pageIndex = UrlParameter.Optional }
             );
+        }
 
+        private static void RegisterConfigRoutes(RouteCollection routes)
+        {
             routes.MapRoute(
                 name: "CreateConfig",
                 url: "Config/Create/{appName}/{envName}",
@@ -50,12 +83,6 @@ namespace DisConf.Web
                name: "ForceRefreshConfigs",
                url: "ForceRefreshConfigs/{appName}/{envName}",
                defaults: new { controller = "App", action = "ForceRefreshConfig", appName = UrlParameter.Optional, envName = UrlParameter.Optional }
-            );
-
-            routes.MapRoute(
-                name: "Default",
-                url: "{controller}/{action}/{pageIndex}",
-                defaults: new { controller = "App", action = "AppList", pageIndex = UrlParameter.Optional }
             );
         }
     }

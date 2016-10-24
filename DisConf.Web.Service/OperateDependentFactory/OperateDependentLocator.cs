@@ -1,6 +1,7 @@
 ﻿using DisConf.Web.Service.Services.App.AppOperator;
 using DisConf.Web.Service.Services.Config.ConfigOperator;
 using DisConf.Web.Service.Services.Env.EnvOperator;
+using DisConf.Web.Service.Services.User.UserOperator;
 
 namespace DisConf.Web.Service.OperateDependentFactory
 {
@@ -22,6 +23,7 @@ namespace DisConf.Web.Service.OperateDependentFactory
             this.RegistApp(container);
             this.RegistConfig(container);
             this.RegistEnv(container);
+            this.RegistUser(container);
         }
 
         private void RegistApp(IDependentContainer container)
@@ -50,6 +52,11 @@ namespace DisConf.Web.Service.OperateDependentFactory
             container.Register<AllEnvQueryer>(db => new AllEnvQueryerDependent(db));
             container.Register<EnvByIdQueryer>(db => new EnvByIdQueryerDependent(db));
             container.Register<EnvByNameQueryer>(db => new EnvByNameQueryerDependent(db));
+        }
+
+        private void RegistUser(IDependentContainer container)
+        {
+            container.Register<UserByNameQueryer>(db => new UserByNameQueryerDependent(db));
         }
     }
 }

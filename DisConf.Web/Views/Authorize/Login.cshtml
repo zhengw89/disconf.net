@@ -1,0 +1,50 @@
+﻿@model DisConf.Web.Models.Auth.LoginModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>登录</title>
+    <script src="@Url.Content("~/Scripts/jquery-1.11.3.min.js")" type="text/javascript"></script>
+    @*<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>*@
+    <script src="@Url.Content("~/Scripts/bootstrap/bootstrap.min.js")" type="text/javascript"></script>
+    <link href="@Url.Content("~/Content/bootstrap/css/bootstrap.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/bootstrap/css/bootstrap-theme.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/login/login.css")" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div class="container">
+        @using (Html.BeginForm("Login", "Authorize", null, FormMethod.Post, new { @class = "form-signin" }))
+        {
+            <h2>登录</h2>
+            if (ViewBag.Error != null)
+            {
+            <div style="color: red;">@ViewBag.Error</div>
+            }
+            <div>
+                @Html.LabelFor(m => m.UserName)
+            </div>
+            <div>
+                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+                <br />
+                @Html.ValidationMessageFor(m => m.UserName)
+            </div>
+            <div>
+                @Html.LabelFor(m => m.Password)
+            </div>
+            <div>
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                <br />
+                @Html.ValidationMessageFor(m => m.Password)
+            </div>
+            
+            <button class="btn btn-primary" type="submit">登录</button>
+        }
+    </div>
+</body>
+</html>

@@ -36,7 +36,12 @@
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li>
-                                @*@Html.ActionLink("注销", "LogOff", "Login")*@
+                                <a href="#">
+                                    @HttpContext.Current.User.Identity.Name
+                                </a>
+                            </li>
+                            <li>
+                                @Html.ActionLink("注销", "LogOff", "Authorize")
                             </li>
                         </ul>
                     </div>

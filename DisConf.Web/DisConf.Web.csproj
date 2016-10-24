@@ -114,7 +114,9 @@
   <ItemGroup>
     <Compile Include="Controllers\ApiController.cs" />
     <Compile Include="Controllers\AppController.cs" />
+    <Compile Include="Controllers\AuthorizeController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\PrivateController.cs" />
     <Compile Include="Helper\CustomConfig\DisConfWebConfig.cs" />
     <Compile Include="Helper\CustomConfig\WebConfigHelper.cs" />
     <Compile Include="Helper\CustomHtmlHelper\PagingHelpers.cs" />
@@ -125,6 +127,7 @@
     <Compile Include="Helper\CustomResult\Http404Result.cs" />
     <Compile Include="Models\App\AppDetailModel.cs" />
     <Compile Include="Models\App\CreateAppModel.cs" />
+    <Compile Include="Models\Auth\LoginModel.cs" />
     <Compile Include="Models\Config\CreateConfigModel.cs" />
     <Compile Include="Models\Config\UpdateConfigModel.cs" />
     <Compile Include="Models\Shared\PaginationViewModel.cs" />
@@ -141,6 +144,7 @@
     <Content Include="Content\bootstrap\css\bootstrap.css" />
     <Content Include="Content\bootstrap\css\bootstrap.min.css" />
     <Content Include="Content\bootstrap\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\login\login.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\bootstrap\bootstrap-datetimepicker.min.js" />
@@ -202,6 +206,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\App\UpdateConfig.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Authorize\Login.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

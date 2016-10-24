@@ -1,8 +1,8 @@
 ﻿using DisConf.Web.Service.Interfaces;
-using DisConf.Web.Service.Services;
 using DisConf.Web.Service.Services.App;
 using DisConf.Web.Service.Services.Config;
 using DisConf.Web.Service.Services.Env;
+using DisConf.Web.Service.Services.User;
 
 namespace DisConf.Web.Service.Factory
 {

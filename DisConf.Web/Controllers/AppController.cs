@@ -10,7 +10,7 @@ using DisConf.Web.Service.Model;
 
 namespace DisConf.Web.Controllers
 {
-    public class AppController : BaseController
+    public class AppController : PrivateController
     {
         #region Views
 
