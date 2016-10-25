@@ -5,9 +5,11 @@ using DisConf.Web.Model;
 
 namespace DisConf.Web.Helper.CustomHtmlHelper
 {
+    /// <summary>
+    /// 分页辅助类
+    /// </summary>
     public static class PagingHelpers
     {
-        //current index left&right buffer
         private const int NavPageSize = 3;
 
         public static MvcHtmlString PageLinks(
@@ -18,7 +20,7 @@ namespace DisConf.Web.Helper.CustomHtmlHelper
         {
             var pagingBuilder = new PagingHtmlBuilder();
             var result = new StringBuilder();
-            //previous link
+
             string prevLink = (pagingInfo.CurrentPage == 1)
                 ? pagingBuilder.BuildHtmlItem(pageUrl(pagingInfo.CurrentPage - 1), "<", false, true)
                 : pagingBuilder.BuildHtmlItem(pageUrl(pagingInfo.CurrentPage - 1), "<");
@@ -36,7 +38,6 @@ namespace DisConf.Web.Helper.CustomHtmlHelper
                 result.Append(pageHtml);
             }
 
-            // next link
             string nextLink = (pagingInfo.CurrentPage >= pagingInfo.TotalPages)
                 ? pagingBuilder.BuildHtmlItem(pageUrl(pagingInfo.CurrentPage + 1), ">", false, true)
                 : pagingBuilder.BuildHtmlItem(pageUrl(pagingInfo.CurrentPage + 1), ">");

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using CommonProcess.DependentProvider;
-using DisConf.Web.Repository.Factory;
 using DisConf.Web.Service.Core;
 using DisConf.Web.Service.Core.Model;
 using DisConf.Web.Service.Core.Process;
@@ -22,6 +20,12 @@ namespace DisConf.Web.Service
 
         #region Protected Method
 
+        /// <summary>
+        /// 执行业务过程
+        /// </summary>
+        /// <typeparam name="T">返回值类型</typeparam>
+        /// <param name="func">核心逻辑</param>
+        /// <returns></returns>
         protected T ExeProcess<T>(Func<Database, T> func)
         {
             using (var db = this.CreateDatabase())
@@ -30,9 +34,15 @@ namespace DisConf.Web.Service
             }
         }
 
+        /// <summary>
+        /// 根据业务执行类解析其配置对象
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="db"></param>
+        /// <returns></returns>
         protected IDisConfProcessConfig ResloveProcessConfig<T>(Database db)
         {
-            return new DisConfProcessConfig(db, this.Config.ZookeeperHost)
+            return new DisConfProcessConfig(this.Config.UserName, db, this.Config.ZookeeperHost)
             {
                 DependentProvider = this.ResloveOperateDependent<T>(db),
             };
@@ -83,16 +93,32 @@ namespace DisConf.Web.Service
         #endregion
     }
 
+    /// <summary>
+    /// 业务配置对象
+    /// </summary>
     public class ServiceConfig
     {
+        private readonly string _userName;
+        /// <summary>
+        /// 用户名
+        /// </summary>
+        public string UserName { get { return this._userName; } }
+
         private readonly string _connectionName;
+        /// <summary>
+        /// 数据库连接字符串名称
+        /// </summary>
         public string ConnectionName { get { return this._connectionName; } }
 
         private readonly string _zookeeperHost;
+        /// <summary>
+        /// Zookeeper地址
+        /// </summary>
         public string ZookeeperHost { get { return this._zookeeperHost; } }
 
-        public ServiceConfig(string connectionName, string zookeeperHost)
+        public ServiceConfig(string userName, string connectionName, string zookeeperHost)
         {
+            this._userName = userName;
             this._connectionName = connectionName;
             this._zookeeperHost = zookeeperHost;
         }

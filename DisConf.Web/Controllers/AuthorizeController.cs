@@ -6,6 +6,9 @@ using DisConf.Web.Service.Interfaces;
 
 namespace DisConf.Web.Controllers
 {
+    /// <summary>
+    /// 身份验证控制器
+    /// </summary>
     public class AuthorizeController : BaseController
     {
         #region View

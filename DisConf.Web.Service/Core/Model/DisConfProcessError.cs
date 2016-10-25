@@ -2,6 +2,9 @@
 
 namespace DisConf.Web.Service.Core.Model
 {
+    /// <summary>
+    /// 错误信息对象
+    /// </summary>
     internal class DisConfProcessError
     {
         public int Code { get; set; }

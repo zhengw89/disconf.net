@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using DisConf.Web.Controllers.Base;
 using DisConf.Web.Models.User;
 using DisConf.Web.Service.Interfaces;
 
 namespace DisConf.Web.Controllers
 {
-    public class UserController : PrivateController
+    /// <summary>
+    /// 用户相关控制器
+    /// </summary>
+    public class UserController : WebPrivateController
     {
         #region View
 
@@ -46,7 +45,7 @@ namespace DisConf.Web.Controllers
             if (result.HasError)
             {
                 ViewBag.Error = result.Error.Message;
-                return View("CreateUser", model); 
+                return View("CreateUser", model);
             }
 
             return RedirectToRoute("Users");

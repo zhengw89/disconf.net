@@ -11,7 +11,10 @@ using DisConf.Web.Service.Model;
 
 namespace DisConf.Web.Controllers
 {
-    public class AppController : PrivateController
+    /// <summary>
+    /// 应用程序相关控制器
+    /// </summary>
+    public class AppController : WebPrivateController
     {
         #region Views
 

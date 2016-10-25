@@ -3,6 +3,9 @@ using DisConf.Web.Model;
 
 namespace DisConf.Web.Repository.Models
 {
+    /// <summary>
+    /// Model转换辅助
+    /// </summary>
     internal class MapperHelper
     {
         private static bool _initialized = false;
@@ -10,8 +13,8 @@ namespace DisConf.Web.Repository.Models
 
         public static void Initialize()
         {
-            Mapper.CreateMap<T_APP, App>();
-            Mapper.CreateMap<App, T_APP>();
+            //Mapper.CreateMap<T_APP, App>();
+            //Mapper.CreateMap<App, T_APP>();
             if (!_initialized)
             {
                 lock (LockObj)

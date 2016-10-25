@@ -5,9 +5,18 @@ using System.Threading;
 
 namespace DisConf.Web.Service.Core.Process
 {
+    /// <summary>
+    /// 操作核心基类
+    /// </summary>
     internal abstract class DisConfBaseCoreOperateProcess : CoreOperateProcess
     {
+        /// <summary>
+        /// 是否需要更新Zookeeper标识
+        /// </summary>
         protected readonly bool NeedUpdateZookeeper;
+        /// <summary>
+        /// 操作类配置信息
+        /// </summary>
         protected readonly IDisConfProcessConfig Config;
 
         protected DisConfBaseCoreOperateProcess(IDisConfProcessConfig config, bool needUpdateZookeeper)
@@ -17,27 +26,38 @@ namespace DisConf.Web.Service.Core.Process
             this.Config = config;
         }
 
+        /// <summary>
+        /// 捕获通用错误
+        /// </summary>
+        /// <param name="message"></param>
         protected void CacheProcessError(string message)
         {
             base.CacheError(-100, message);
         }
 
+        /// <summary>
+        /// 更新Zookeeper节点虚方法
+        /// </summary>
+        /// <param name="zk"></param>
         protected virtual void UpdateZookeeper(ZooKeeper zk)
         {
         }
 
         protected override void OnProcessStart()
         {
+            //启动事务
             this.Config.Db.BeginTransaction();
             base.OnProcessStart();
         }
 
         protected override bool AfterRecordLog()
         {
+            //更新Zookeeper
             if (this.NeedUpdateZookeeper)
             {
                 using (var zk = new ZooKeeper(this.Config.ZookeeperHost, new TimeSpan(0, 0, 5, 0), null))
                 {
+                    //验证连接状态
                     for (int i = 0; i < 3; i++)
                     {
                         if (Equals(zk.State, ZooKeeper.States.CONNECTED))
@@ -66,12 +86,14 @@ namespace DisConf.Web.Service.Core.Process
 
         protected override void OnProcessSuccess()
         {
+            //完成事务
             this.Config.Db.CompleteTransaction();
             base.OnProcessSuccess();
         }
 
         protected override void OnProcessFail()
         {
+            //回滚事务
             this.Config.Db.AbortTransaction();
             base.OnProcessFail();
         }

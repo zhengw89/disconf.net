@@ -2,6 +2,9 @@
 
 namespace DisConf.Web.Helper.CustomConfig
 {
+    /// <summary>
+    /// 管理站点WebConfig辅助类
+    /// </summary>
     public static class WebConfigHelper
     {
         public const string DatabaseConnectionStringName = "DisConfDb";

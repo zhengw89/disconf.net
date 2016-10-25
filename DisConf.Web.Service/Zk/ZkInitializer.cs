@@ -6,6 +6,9 @@ using ZooKeeperNet;
 
 namespace DisConf.Web.Service.Zk
 {
+    /// <summary>
+    /// Zookeeper初始化辅助对象
+    /// </summary>
     internal class ZkInitializer
     {
         public string App { get; set; }
@@ -16,6 +19,10 @@ namespace DisConf.Web.Service.Zk
 
         public ZooKeeper ZooKeeper { get; set; }
 
+        /// <summary>
+        /// 初始化，根据配置信息初始化Zookeeper节点
+        /// </summary>
+        /// <returns></returns>
         public bool Initialize()
         {
             var rootNodePath = ZooPathManager.GetRootPath(this.App, this.Env);

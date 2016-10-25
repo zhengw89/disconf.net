@@ -2,6 +2,9 @@
 
 namespace DisConf.Web.Helper.CustomConfig
 {
+    /// <summary>
+    /// WebConfig包装
+    /// </summary>
     public class DisConfWebConfigSection : ConfigurationSection
     {
         [ConfigurationProperty("zookeepers")]

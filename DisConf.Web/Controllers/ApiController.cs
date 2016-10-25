@@ -7,6 +7,9 @@ using DisConf.Web.Service.Model;
 
 namespace DisConf.Web.Controllers
 {
+    /// <summary>
+    /// 接口控制器
+    /// </summary>
     public class ApiController : BaseController
     {
         [HttpGet]

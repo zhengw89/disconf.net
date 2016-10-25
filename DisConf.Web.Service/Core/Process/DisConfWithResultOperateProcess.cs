@@ -12,6 +12,10 @@
         {
         }
 
+        /// <summary>
+        /// 返回结果方法
+        /// </summary>
+        /// <returns></returns>
         protected abstract T GetResult();
 
         public T ExecuteProcess()

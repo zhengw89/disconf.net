@@ -2,6 +2,10 @@
 
 namespace DisConf.Web.Service.Core.Model
 {
+    /// <summary>
+    /// 操作结果对象
+    /// </summary>
+    /// <typeparam name="T">结果类型</typeparam>
     internal class DisConfProcessResult<T>
     {
         public DisConfProcessError Error { get; set; }

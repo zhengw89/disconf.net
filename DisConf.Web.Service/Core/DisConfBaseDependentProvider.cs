@@ -4,6 +4,9 @@ using PetaPoco;
 
 namespace DisConf.Web.Service.Core
 {
+    /// <summary>
+    /// 操作类依赖容器
+    /// </summary>
     internal abstract class DisConfBaseDependentProvider : BaseDependentProvider
     {
         protected readonly Database Db;
@@ -13,14 +16,13 @@ namespace DisConf.Web.Service.Core
             this.Db = db;
         }
 
+        /// <summary>
+        /// 注册依赖项辅助方法
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
         protected void RegistRepository<T>()
         {
             base.RegisterDependent<T>(RepositoryLocator.Container.Resolve<T>(this.Db));
         }
-
-        //protected T ResolveRepository<T>()
-        //{
-        //    return RepositoryLocator.Container.Resolve<T>(this.Db);
-        //}
     }
 }

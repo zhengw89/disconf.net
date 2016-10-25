@@ -116,7 +116,7 @@
     <Compile Include="Controllers\AppController.cs" />
     <Compile Include="Controllers\AuthorizeController.cs" />
     <Compile Include="Controllers\Base\BaseController.cs" />
-    <Compile Include="Controllers\Base\PrivateController.cs" />
+    <Compile Include="Controllers\Base\WebPrivateController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Helper\CustomConfig\DisConfWebConfig.cs" />
     <Compile Include="Helper\CustomConfig\WebConfigHelper.cs" />
