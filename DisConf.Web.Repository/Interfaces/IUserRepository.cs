@@ -6,6 +6,10 @@ namespace DisConf.Web.Repository.Interfaces
     {
         bool Exists(string userName);
 
+        bool Create(User user);
+
         User GetByUserName(string userName);
+
+        PageList<User> GetByCondition(int pageIndex, int pageSize);
     }
 }

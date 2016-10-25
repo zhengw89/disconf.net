@@ -115,8 +115,9 @@
     <Compile Include="Controllers\ApiController.cs" />
     <Compile Include="Controllers\AppController.cs" />
     <Compile Include="Controllers\AuthorizeController.cs" />
-    <Compile Include="Controllers\BaseController.cs" />
-    <Compile Include="Controllers\PrivateController.cs" />
+    <Compile Include="Controllers\Base\BaseController.cs" />
+    <Compile Include="Controllers\Base\PrivateController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Helper\CustomConfig\DisConfWebConfig.cs" />
     <Compile Include="Helper\CustomConfig\WebConfigHelper.cs" />
     <Compile Include="Helper\CustomHtmlHelper\PagingHelpers.cs" />
@@ -131,6 +132,7 @@
     <Compile Include="Models\Config\CreateConfigModel.cs" />
     <Compile Include="Models\Config\UpdateConfigModel.cs" />
     <Compile Include="Models\Shared\PaginationViewModel.cs" />
+    <Compile Include="Models\User\CreateUserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -209,6 +211,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Authorize\Login.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\User\Users.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\User\CreateUser.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

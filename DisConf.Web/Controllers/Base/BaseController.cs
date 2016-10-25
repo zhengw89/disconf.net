@@ -3,7 +3,7 @@ using DisConf.Web.Helper.CustomConfig;
 using DisConf.Web.Service;
 using DisConf.Web.Service.Factory;
 
-namespace DisConf.Web.Controllers
+namespace DisConf.Web.Controllers.Base
 {
     public abstract class BaseController : Controller
     {

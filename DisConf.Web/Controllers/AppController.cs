@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
+using DisConf.Web.Controllers.Base;
 using DisConf.Web.Helper.CustomResult;
 using DisConf.Web.Model;
 using DisConf.Web.Models.App;

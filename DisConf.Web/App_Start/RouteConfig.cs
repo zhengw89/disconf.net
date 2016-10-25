@@ -10,10 +10,9 @@ namespace DisConf.Web
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             RegisterAuthorizeRoutes(routes);
-
             RegisterAppRoutes(routes);
-
             RegisterConfigRoutes(routes);
+            RegisterUserRoutes(routes);
 
             routes.MapRoute(
                 name: "Default",
@@ -83,6 +82,21 @@ namespace DisConf.Web
                name: "ForceRefreshConfigs",
                url: "ForceRefreshConfigs/{appName}/{envName}",
                defaults: new { controller = "App", action = "ForceRefreshConfig", appName = UrlParameter.Optional, envName = UrlParameter.Optional }
+            );
+        }
+
+        private static void RegisterUserRoutes(RouteCollection routes)
+        {
+            routes.MapRoute(
+                name: "Users",
+                url: "Users/{pageIndex}",
+                defaults: new { controller = "User", action = "Users", pageIndex = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
+                name: "CreateUser",
+                url: "CreateUser",
+                defaults: new { controller = "User", action = "CreateUser" }
             );
         }
     }

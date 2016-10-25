@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using System.Web.Security;
+using DisConf.Web.Controllers.Base;
 using DisConf.Web.Models.Auth;
 using DisConf.Web.Service.Interfaces;
 

@@ -1,4 +1,5 @@
-﻿using DisConf.Web.Service.Interfaces;
+﻿using DisConf.Web.Model;
+using DisConf.Web.Service.Interfaces;
 using DisConf.Web.Service.Model;
 using DisConf.Web.Service.Services.User.UserOperator;
 
@@ -20,6 +21,30 @@ namespace DisConf.Web.Service.Services.User
                     userName);
 
                 return base.ExeQueryProcess(queryer);
+            });
+        }
+
+        public BizResult<PageList<Web.Model.User>> GetByCondition(int pageIndex, int pageSize)
+        {
+            return base.ExeProcess(db =>
+            {
+                var queryer = new UserByConditionQueryer(
+                    base.ResloveProcessConfig<UserByConditionQueryer>(db),
+                    pageIndex, pageSize);
+
+                return base.ExeQueryProcess(queryer);
+            });
+        }
+
+        public BizResult<bool> CreateUser(string userName, string password)
+        {
+            return base.ExeProcess(db =>
+            {
+                var creator = new UserCreator(
+                    base.ResloveProcessConfig<UserCreator>(db),
+                    userName, password);
+
+                return base.ExeOperateProcess(creator);
             });
         }
     }

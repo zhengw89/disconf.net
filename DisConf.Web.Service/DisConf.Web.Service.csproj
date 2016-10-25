@@ -95,7 +95,9 @@
     <Compile Include="Services\Env\EnvOperator\EnvByIdQueryer.cs" />
     <Compile Include="Services\Env\EnvOperator\EnvByNameQueryer.cs" />
     <Compile Include="Services\Env\EnvService.cs" />
+    <Compile Include="Services\User\UserOperator\UserByConditionQueryer.cs" />
     <Compile Include="Services\User\UserOperator\UserByNameQueryer.cs" />
+    <Compile Include="Services\User\UserOperator\UserCreator.cs" />
     <Compile Include="Services\User\UserService.cs" />
     <Compile Include="Zk\ZkInitializer.cs" />
   </ItemGroup>
