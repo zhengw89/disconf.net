@@ -17,9 +17,11 @@ namespace DisConf.Web.Service.Interfaces
         BizResult<Config> GetByName(int appId, int envId, string name);
 
         BizResult<List<Config>> GetAll(int appId, int envId);
-        
+
         BizResult<PageList<Config>> GetByCondition(int appId, int envId, int pageIndex, int pageSize);
 
         bool ForceRefresh(int appId, string appName, int envId, string envName);
+
+        BizResult<PageList<ConfigLog>> GetConfigLogs(int configId, int pageIndex, int pageSize);
     }
 }

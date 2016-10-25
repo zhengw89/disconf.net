@@ -83,6 +83,7 @@
     <Compile Include="Services\App\AppOperator\AppDeleter.cs" />
     <Compile Include="Services\App\AppOperator\AppUpdater.cs" />
     <Compile Include="Services\App\AppService.cs" />
+    <Compile Include="Services\Config\ConfigLogOperator\ConfigLogByConditionQueryer.cs" />
     <Compile Include="Services\Config\ConfigOperator\ConfigByAppAndEnvQueryer.cs" />
     <Compile Include="Services\Config\ConfigOperator\ConfigByIdQueryer.cs" />
     <Compile Include="Services\Config\ConfigOperator\ConfigByConditionQueryer.cs" />

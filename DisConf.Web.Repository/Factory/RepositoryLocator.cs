@@ -25,6 +25,7 @@ namespace DisConf.Web.Repository.Factory
             container.Register<IAppRepository>(db => new AppRepository(db));
             container.Register<IEnvRepository>(db => new EnvRepository(db));
             container.Register<IConfigRepository>(db => new ConfigRepository(db));
+            container.Register<IConfigLogRepository>(db => new ConfigLogRepository(db));
         }
     }
 }

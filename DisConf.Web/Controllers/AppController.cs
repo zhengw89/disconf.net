@@ -179,6 +179,23 @@ namespace DisConf.Web.Controllers
             });
         }
 
+        [HttpGet]
+        public ActionResult ConfigLogs(string appName, string envName, string configName, int pageIndex = 1, int pageSize = 10)
+        {
+            var app = base.ResolveService<IAppService>().GetByName(appName).Data;
+            var env = base.ResolveService<IEnvService>().GetEnvByName(envName).Data;
+            var configService = base.ResolveService<IConfigService>();
+            var config = configService.GetByName(app.Id, env.Id, configName).Data;
+
+            return View(new ConfigLogsModel()
+            {
+                AppName = app.Name,
+                EnvName = env.Name,
+                ConfigName = config.Name,
+                ConfigLogs = configService.GetConfigLogs(config.Id, pageIndex, pageSize).Data
+            });
+        }
+
         #endregion
 
         #region Get

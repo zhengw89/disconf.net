@@ -83,6 +83,12 @@ namespace DisConf.Web
                url: "ForceRefreshConfigs/{appName}/{envName}",
                defaults: new { controller = "App", action = "ForceRefreshConfig", appName = UrlParameter.Optional, envName = UrlParameter.Optional }
             );
+
+            routes.MapRoute(
+               name: "ConfigLogs",
+               url: "ConfigLogs/{appName}/{envName}/{configName}/{pageIndex}",
+               defaults: new { controller = "App", action = "ConfigLogs", appName = UrlParameter.Optional, envName = UrlParameter.Optional, configName = UrlParameter.Optional, pageIndex = UrlParameter.Optional }
+            );
         }
 
         private static void RegisterUserRoutes(RouteCollection routes)

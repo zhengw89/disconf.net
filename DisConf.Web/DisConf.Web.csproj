@@ -129,6 +129,7 @@
     <Compile Include="Models\App\AppDetailModel.cs" />
     <Compile Include="Models\App\CreateAppModel.cs" />
     <Compile Include="Models\Auth\LoginModel.cs" />
+    <Compile Include="Models\Config\ConfigLogsModel.cs" />
     <Compile Include="Models\Config\CreateConfigModel.cs" />
     <Compile Include="Models\Config\UpdateConfigModel.cs" />
     <Compile Include="Models\Shared\PaginationViewModel.cs" />
@@ -217,6 +218,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\User\CreateUser.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\App\ConfigLogs.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

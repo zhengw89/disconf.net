@@ -1,4 +1,5 @@
 ﻿using CommonProcess.DependentProvider;
+using DisConf.Web.Model;
 using PetaPoco;
 
 namespace DisConf.Web.Service.Core
@@ -7,11 +8,8 @@ namespace DisConf.Web.Service.Core
     {
         public IDependentProvider DependentProvider { get; set; }
 
-        private readonly string _userName;
-        /// <summary>
-        /// 操作用户用户名
-        /// </summary>
-        public string UserName { get { return this._userName; } }
+        private readonly User _user;
+        public User User { get { return this._user; } }
 
         private readonly Database _db;
         public Database Db { get { return this._db; } }
@@ -19,9 +17,9 @@ namespace DisConf.Web.Service.Core
         private readonly string _zookeeperHost;
         public string ZookeeperHost { get { return this._zookeeperHost; } }
 
-        public DisConfProcessConfig(string userName, Database db, string zookeeperHost)
+        public DisConfProcessConfig(User user, Database db, string zookeeperHost)
         {
-            this._userName = userName;
+            this._user = user;
             this._db = db;
             this._zookeeperHost = zookeeperHost;
         }

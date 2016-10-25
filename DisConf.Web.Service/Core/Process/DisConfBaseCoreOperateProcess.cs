@@ -2,6 +2,7 @@
 using CommonProcess;
 using ZooKeeperNet;
 using System.Threading;
+using DisConf.Web.Model;
 
 namespace DisConf.Web.Service.Core.Process
 {
@@ -18,6 +19,15 @@ namespace DisConf.Web.Service.Core.Process
         /// 操作类配置信息
         /// </summary>
         protected readonly IDisConfProcessConfig Config;
+
+        protected User User
+        {
+            get
+            {
+                if (Config == null) return null;
+                return Config.User;
+            }
+        }
 
         protected DisConfBaseCoreOperateProcess(IDisConfProcessConfig config, bool needUpdateZookeeper)
             : base(config)

@@ -1,4 +1,5 @@
 ﻿using DisConf.Web.Service.Services.App.AppOperator;
+using DisConf.Web.Service.Services.Config.ConfigLogOperator;
 using DisConf.Web.Service.Services.Config.ConfigOperator;
 using DisConf.Web.Service.Services.Env.EnvOperator;
 using DisConf.Web.Service.Services.User.UserOperator;
@@ -45,6 +46,8 @@ namespace DisConf.Web.Service.OperateDependentFactory
             container.Register<ConfigByNameQueryer>(db => new ConfigByNameQueryerDependent(db));
             container.Register<ConfigByAppAndEnvQueryer>(db => new ConfigByAppAndEnvQueryerDependent(db));
             container.Register<ConfigByConditionQueryer>(db => new ConfigByConditionQueryerDependent(db));
+
+            container.Register<ConfigLogByConditionQueryer>(db => new ConfigLogByConditionQueryerDependent(db));
         }
 
         private void RegistEnv(IDependentContainer container)

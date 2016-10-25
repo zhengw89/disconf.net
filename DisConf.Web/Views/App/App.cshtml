@@ -43,7 +43,7 @@ else
                 {
                 <tr>
                     <td>@config.Id</td>
-                    <td>@config.Name</td>
+                    <td>@Html.RouteLink(config.Name, "ConfigLogs", new { appName = Model.Data.AppInfo.Name, envName = Model.Data.CurrentEnv.Name, configName = config.Name }, new { })</td>
                     <td>@config.Value</td>
                     <td>
                         @Html.RouteLink("编辑值", "UpdateConfig", new

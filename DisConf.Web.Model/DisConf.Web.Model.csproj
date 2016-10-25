@@ -42,6 +42,8 @@
   <ItemGroup>
     <Compile Include="App.cs" />
     <Compile Include="Config.cs" />
+    <Compile Include="ConfigLog.cs" />
+    <Compile Include="DataOptType.cs" />
     <Compile Include="Env.cs" />
     <Compile Include="IPageList.cs" />
     <Compile Include="PageList.cs" />

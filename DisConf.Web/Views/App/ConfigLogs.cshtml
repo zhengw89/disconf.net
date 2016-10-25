@@ -1,0 +1,35 @@
+﻿@using DisConf.Web.Models.Shared
+@model DisConf.Web.Models.Config.ConfigLogsModel
+@{
+    ViewBag.Title = "Config修改日志";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@string.Format("应用程序:{0} 环境:{1} 配置项:{2} 修改日志", Model.AppName, Model.EnvName, Model.ConfigName)</h2>
+
+<table class="table table-striped table-hover ">
+    <thead>
+        <th>用户名</th>
+        <th>操作时间</th>
+        <th>操作类型</th>
+    </thead>
+    <tbody>
+        @if (Model.ConfigLogs != null)
+        {
+            foreach (var log in Model.ConfigLogs.Items)
+            {
+            <tr>
+                <td>@log.UserName</td>
+                <td>@log.OptTime</td>
+                <td>@log.OptType</td>
+            </tr>
+            }
+        }
+    </tbody>
+</table>
+
+@Html.Partial("PaginationPartialView", new PaginationViewModel()
+{
+    PagedList = Model.ConfigLogs,
+    GenerateUrlFunc = (index) => Url.Action("ConfigLogs", new { appName = Model.AppName, envName = Model.EnvName, configName = Model.ConfigName, pageIndex = index })
+})

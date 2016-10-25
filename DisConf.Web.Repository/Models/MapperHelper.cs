@@ -27,6 +27,9 @@ namespace DisConf.Web.Repository.Models
                         Mapper.CreateMap<T_CONFIG, Config>();
                         Mapper.CreateMap<Config, T_CONFIG>();
 
+                        Mapper.CreateMap<T_CONFIG_LOG, ConfigLog>();
+                        Mapper.CreateMap<ConfigLog, T_CONFIG_LOG>();
+
                         Mapper.CreateMap<T_ENV, Env>();
                         Mapper.CreateMap<Env, T_ENV>();
 

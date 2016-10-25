@@ -7,6 +7,7 @@ using DisConf.Utility.Path;
 using DisConf.Web.Model;
 using DisConf.Web.Service.Interfaces;
 using DisConf.Web.Service.Model;
+using DisConf.Web.Service.Services.Config.ConfigLogOperator;
 using DisConf.Web.Service.Services.Config.ConfigOperator;
 using ZooKeeperNet;
 
@@ -24,7 +25,7 @@ namespace DisConf.Web.Service.Services.Config
             return base.ExeProcess(db =>
             {
                 var creator = new ConfigCreator(
-                    base.ResloveProcessConfig<ConfigCreator>(db),
+                    base.ResloveProcessConfig<ConfigCreator>(db, true),
                     appId, envId, name, value);
 
                 return base.ExeOperateProcess(creator);
@@ -36,7 +37,7 @@ namespace DisConf.Web.Service.Services.Config
             return base.ExeProcess(db =>
             {
                 var updater = new ConfigValueUpdater(
-                    base.ResloveProcessConfig<ConfigValueUpdater>(db),
+                    base.ResloveProcessConfig<ConfigValueUpdater>(db, true),
                     id, value);
 
                 return base.ExeOperateProcess(updater);
@@ -48,7 +49,7 @@ namespace DisConf.Web.Service.Services.Config
             return base.ExeProcess(db =>
             {
                 var deleter = new ConfigDeleter(
-                    base.ResloveProcessConfig<ConfigDeleter>(db),
+                    base.ResloveProcessConfig<ConfigDeleter>(db, true),
                     id);
 
                 return base.ExeOperateProcess(deleter);
@@ -138,6 +139,18 @@ namespace DisConf.Web.Service.Services.Config
             }
 
             return true;
+        }
+
+        public BizResult<PageList<ConfigLog>> GetConfigLogs(int configId, int pageIndex, int pageSize)
+        {
+            return base.ExeProcess(db =>
+            {
+                var queryer = new ConfigLogByConditionQueryer(
+                    base.ResloveProcessConfig<ConfigLogByConditionQueryer>(db),
+                    configId, pageIndex, pageSize);
+
+                return base.ExeQueryProcess(queryer);
+            });
         }
     }
 }

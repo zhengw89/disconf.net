@@ -1,5 +1,8 @@
 ﻿using System;
 using CommonProcess.DependentProvider;
+using DisConf.Web.Model;
+using DisConf.Web.Repository.Factory;
+using DisConf.Web.Repository.Interfaces;
 using DisConf.Web.Service.Core;
 using DisConf.Web.Service.Core.Model;
 using DisConf.Web.Service.Core.Process;
@@ -37,12 +40,31 @@ namespace DisConf.Web.Service
         /// <summary>
         /// 根据业务执行类解析其配置对象
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="db"></param>
+        /// <typeparam name="T">对象类型</typeparam>
+        /// <param name="db">数据库连接</param>
         /// <returns></returns>
         protected IDisConfProcessConfig ResloveProcessConfig<T>(Database db)
         {
-            return new DisConfProcessConfig(this.Config.UserName, db, this.Config.ZookeeperHost)
+            return this.ResloveProcessConfig<T>(db, false);
+        }
+
+        /// <summary>
+        /// 根据业务执行类解析其配置对象
+        /// </summary>
+        /// <typeparam name="T">对象类型</typeparam>
+        /// <param name="db">数据库连接</param>
+        /// <param name="loadUserInfo">是否需要加载登陆用户相关信息</param>
+        /// <returns></returns>
+        protected IDisConfProcessConfig ResloveProcessConfig<T>(Database db, bool loadUserInfo)
+        {
+            User user = null;
+            if (loadUserInfo && !string.IsNullOrEmpty(this.Config.UserName))
+            {
+                var repository = RepositoryLocator.Container.Resolve<IUserRepository>(db);
+                user = repository.GetByUserName(this.Config.UserName);
+            }
+
+            return new DisConfProcessConfig(user, db, this.Config.ZookeeperHost)
             {
                 DependentProvider = this.ResloveOperateDependent<T>(db),
             };

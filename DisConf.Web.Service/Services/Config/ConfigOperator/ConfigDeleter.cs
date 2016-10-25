@@ -1,4 +1,6 @@
-﻿using DisConf.Utility.Path;
+﻿using System;
+using DisConf.Utility.Path;
+using DisConf.Web.Model;
 using DisConf.Web.Repository.Interfaces;
 using DisConf.Web.Service.Core;
 using DisConf.Web.Service.Core.Process;
@@ -19,6 +21,7 @@ namespace DisConf.Web.Service.Services.Config.ConfigOperator
             base.RegistRepository<IAppRepository>();
             base.RegistRepository<IEnvRepository>();
             base.RegistRepository<IConfigRepository>();
+            base.RegistRepository<IConfigLogRepository>();
         }
     }
 
@@ -31,6 +34,7 @@ namespace DisConf.Web.Service.Services.Config.ConfigOperator
         private readonly IAppRepository _appRepository;
         private readonly IEnvRepository _envRepository;
         private readonly IConfigRepository _configRepository;
+        private readonly IConfigLogRepository _configLogRepository;
 
         public ConfigDeleter(IDisConfProcessConfig config, int id)
             : base(config, true)
@@ -40,6 +44,7 @@ namespace DisConf.Web.Service.Services.Config.ConfigOperator
             this._appRepository = base.ResolveDependency<IAppRepository>();
             this._envRepository = base.ResolveDependency<IEnvRepository>();
             this._configRepository = base.ResolveDependency<IConfigRepository>();
+            this._configLogRepository = base.ResolveDependency<IConfigLogRepository>();
         }
 
         protected override bool PreCheckProcessDataLegal()
@@ -85,6 +90,24 @@ namespace DisConf.Web.Service.Services.Config.ConfigOperator
             }
 
             base.UpdateZookeeper(zk);
+        }
+
+        protected override bool RecordLogInfo()
+        {
+            if (!this._configLogRepository.Create(new ConfigLog()
+            {
+                ConfigId = this._id,
+                OptTime = DateTime.Now,
+                OptType = DataOptType.Delete,
+                UserId = base.User.Id,
+                UserName = base.User.UserName
+            }))
+            {
+                base.CacheProcessError("记录日志失败");
+                return false;
+            }
+
+            return base.RecordLogInfo();
         }
     }
 }

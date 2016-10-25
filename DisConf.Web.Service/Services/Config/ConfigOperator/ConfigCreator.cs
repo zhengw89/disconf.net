@@ -1,4 +1,6 @@
-﻿using DisConf.Utility.Path;
+﻿using System;
+using DisConf.Utility.Path;
+using DisConf.Web.Model;
 using DisConf.Web.Repository.Interfaces;
 using DisConf.Web.Service.Core;
 using DisConf.Web.Service.Core.Process;
@@ -19,11 +21,14 @@ namespace DisConf.Web.Service.Services.Config.ConfigOperator
             base.RegistRepository<IAppRepository>();
             base.RegistRepository<IConfigRepository>();
             base.RegistRepository<IEnvRepository>();
+            base.RegistRepository<IConfigLogRepository>();
         }
     }
 
     internal class ConfigCreator : DisConfOperateProcess
     {
+        private int _configId = -1;
+
         private readonly int _appId, _envId;
         private readonly string _name, _value;
 
@@ -33,6 +38,7 @@ namespace DisConf.Web.Service.Services.Config.ConfigOperator
         private readonly IAppRepository _appRepository;
         private readonly IConfigRepository _configRepository;
         private readonly IEnvRepository _envRepository;
+        private readonly IConfigLogRepository _configLogRepository;
 
         public ConfigCreator(IDisConfProcessConfig config, int appId, int envId, string name, string value)
             : base(config, true)
@@ -45,6 +51,7 @@ namespace DisConf.Web.Service.Services.Config.ConfigOperator
             this._appRepository = base.ResolveDependency<IAppRepository>();
             this._configRepository = base.ResolveDependency<IConfigRepository>();
             this._envRepository = base.ResolveDependency<IEnvRepository>();
+            this._configLogRepository = base.ResolveDependency<IConfigLogRepository>();
         }
 
         protected override bool PreCheckProcessDataLegal()
@@ -90,7 +97,7 @@ namespace DisConf.Web.Service.Services.Config.ConfigOperator
 
         protected override bool ProcessMainData()
         {
-            var configId = this._configRepository.Create(new Web.Model.Config()
+            this._configId = this._configRepository.Create(new Web.Model.Config()
             {
                 AppId = this._appId,
                 EnvId = this._envId,
@@ -98,7 +105,7 @@ namespace DisConf.Web.Service.Services.Config.ConfigOperator
                 Value = this._value
             });
 
-            if (configId <= 0)
+            if (this._configId <= 0)
             {
                 base.CacheProcessError("配置创建失败");
                 return false;
@@ -132,6 +139,24 @@ namespace DisConf.Web.Service.Services.Config.ConfigOperator
             }
 
             base.UpdateZookeeper(zk);
+        }
+
+        protected override bool RecordLogInfo()
+        {
+            if (!this._configLogRepository.Create(new ConfigLog()
+            {
+                ConfigId = this._configId,
+                OptTime = DateTime.Now,
+                OptType = DataOptType.Create,
+                UserId = base.User.Id,
+                UserName = base.User.UserName
+            }))
+            {
+                base.CacheProcessError("记录日志失败");
+                return false;
+            }
+
+            return base.RecordLogInfo();
         }
     }
 }
