@@ -1,0 +1,50 @@
+﻿@model DisConf.Web.Service.Model.BizResult<DisConf.Web.Models.App.UpdateAppModel>
+@{
+    ViewBag.Title = "更新应用程序";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>更新应用程序</h2>
+
+<div>
+    @if (Model.HasError)
+    {
+        <div class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">Error:</span>
+            @Model.Error.Message
+        </div>
+    }
+
+    @using (Html.BeginForm("UpdateApp", "App", FormMethod.Post, new { @class = "form-horizontal" }))
+    {
+        @Html.HiddenFor(m => m.Data.AppId)
+        @Html.HiddenFor(m => m.Data.AppName)
+
+        <div class="form-group">
+            <div class="col-sm-2 control-label">
+                @Html.LabelFor(m => m.Data.AppName)
+            </div>
+            <div class="col-sm-10">
+                @Html.Label(Model.Data.AppName)
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="col-sm-2 control-label">
+                @Html.LabelFor(m => m.Data.AppDescription)
+            </div>
+            <div class="col-sm-10">
+                @Html.TextAreaFor(m => m.Data.AppDescription, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Data.AppDescription)
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="col-sm-2 control-label">
+                <button class="btn btn-primary" type="submit">创建</button>
+            </div>
+        </div>
+    }
+
+</div>

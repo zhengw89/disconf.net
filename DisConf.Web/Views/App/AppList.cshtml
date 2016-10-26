@@ -19,6 +19,7 @@ else
             <th>ID</th>
             <th>名称</th>
             <th>描述</th>
+            <th>操作</th>
         </thead>
         <tbody>
             @foreach (var app in Model.Data.Items)
@@ -27,6 +28,7 @@ else
                     <td>@app.Id</td>
                     <td>@Html.RouteLink(app.Name, "AppDetail", new { appName = app.Name }, new { })</td>
                     <td>@app.Description</td>
+                    <td>@Html.RouteLink("编辑", "UpdateApp", new { appName = app.Name }, new { })</td>
                 </tr>
             }
         </tbody>

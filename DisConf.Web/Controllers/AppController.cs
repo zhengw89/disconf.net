@@ -97,6 +97,27 @@ namespace DisConf.Web.Controllers
         }
 
         [HttpGet]
+        public ActionResult UpdateApp(string appName)
+        {
+            var appService = base.ResolveService<IAppService>();
+            var app = appService.GetByName(appName);
+            if (app.HasError)
+            {
+                return View(new BizResult<UpdateAppModel>() { Error = app.Error });
+            }
+
+            return View(new BizResult<UpdateAppModel>()
+            {
+                Data = new UpdateAppModel()
+                {
+                    AppDescription = app.Data.Description,
+                    AppId = app.Data.Id,
+                    AppName = app.Data.Name
+                }
+            });
+        }
+
+        [HttpGet]
         public ActionResult CreateConfig(string appName, string envName)
         {
             var appService = base.ResolveService<IAppService>();
@@ -248,6 +269,26 @@ namespace DisConf.Web.Controllers
             {
                 return RedirectToAction("AppList");
             }
+        }
+
+        [HttpPost]
+        public ActionResult UpdateApp(BizResult<UpdateAppModel> model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("UpdateApp", model);
+            }
+
+            var service = base.ResolveService<IAppService>();
+            var result = service.Update(model.Data.AppId, model.Data.AppName, model.Data.AppDescription);
+
+            if (result.HasError)
+            {
+                model.Error = result.Error;
+                return View("UpdateApp", model);
+            }
+
+            return RedirectToRoute("Apps");
         }
 
         [HttpPost]

@@ -50,6 +50,11 @@ namespace DisConf.Web
                 defaults: new { controller = "App", action = "CreateApp" }
             );
 
+            routes.MapRoute(
+                name: "UpdateApp",
+                url: "UpdateApp/{appName}",
+                defaults: new { controller = "App", action = "UpdateApp", appName = UrlParameter.Optional }
+            );
 
             routes.MapRoute(
                 name: "AppDetail",
