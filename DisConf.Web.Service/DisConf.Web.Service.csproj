@@ -99,6 +99,7 @@
     <Compile Include="Services\User\UserOperator\UserByConditionQueryer.cs" />
     <Compile Include="Services\User\UserOperator\UserByNameQueryer.cs" />
     <Compile Include="Services\User\UserOperator\UserCreator.cs" />
+    <Compile Include="Services\User\UserOperator\UserDeleter.cs" />
     <Compile Include="Services\User\UserService.cs" />
     <Compile Include="Zk\ZkInitializer.cs" />
   </ItemGroup>

@@ -47,5 +47,17 @@ namespace DisConf.Web.Service.Services.User
                 return base.ExeOperateProcess(creator);
             });
         }
+
+        public BizResult<bool> DeleteUser(int userId)
+        {
+            return base.ExeProcess(db =>
+            {
+                var deleter = new UserDeleter(
+                    base.ResloveProcessConfig<UserDeleter>(db),
+                    userId);
+
+                return base.ExeOperateProcess(deleter);
+            });
+        }
     }
 }

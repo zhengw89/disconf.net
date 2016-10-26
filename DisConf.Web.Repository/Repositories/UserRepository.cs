@@ -15,13 +15,18 @@ namespace DisConf.Web.Repository.Repositories
 
         public bool Exists(string userName)
         {
-            var sql=new Sql().Select("COUNT(*)").From("T_USER").Where("USER_Name = @0", userName);
+            var sql = new Sql().Select("COUNT(*)").From("T_USER").Where("USER_Name = @0", userName);
             return base.Db.ExecuteScalar<long>(sql) > 0;
         }
 
         public bool Create(User user)
         {
             return (int)base.Db.Insert(base.Map<User, T_USER>(user)) > 0;
+        }
+
+        public bool Delete(int id)
+        {
+            return base.Db.Delete<T_USER>(id) > 0;
         }
 
         public User GetByUserName(string userName)

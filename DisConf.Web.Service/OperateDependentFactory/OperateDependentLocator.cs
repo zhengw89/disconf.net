@@ -62,6 +62,7 @@ namespace DisConf.Web.Service.OperateDependentFactory
             container.Register<UserByNameQueryer>(db => new UserByNameQueryerDependent(db));
             container.Register<UserByConditionQueryer>(db => new UserByConditionQueryerDependent(db));
             container.Register<UserCreator>(db => new UserCreatorDependent(db));
+            container.Register<UserDeleter>(db => new UserDeleterDependent(db));
         }
     }
 }

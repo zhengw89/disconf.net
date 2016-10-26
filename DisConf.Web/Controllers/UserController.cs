@@ -51,6 +51,14 @@ namespace DisConf.Web.Controllers
             return RedirectToRoute("Users");
         }
 
+        [HttpPost]
+        public ActionResult DeleteUser(int userId)
+        {
+            base.ResolveService<IUserService>().DeleteUser(userId);
+
+            return RedirectToRoute("Users");
+        }
+
         #endregion
     }
 }

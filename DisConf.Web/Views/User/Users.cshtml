@@ -18,6 +18,7 @@ else
         <thead>
             <th>ID</th>
             <th>名称</th>
+            <th>操作</th>
         </thead>
         <tbody>
             @foreach (var user in Model.Data.Items)
@@ -25,6 +26,34 @@ else
                 <tr>
                     <td>@user.Id</td>
                     <td>@user.UserName</td>
+                    <td>
+
+                        <a href="#" data-toggle="modal" data-target="#@string.Format("tDeleteModal-{0}", user.Id)">删除</a>
+                        <div id="@string.Format("tDeleteModal-{0}", user.Id)" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="@string.Format("tDeleteModalLabel-{0}", user.Id)">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    @using (Html.BeginForm("DeleteUser", "User", FormMethod.Post, null))
+                                    {
+                                        @Html.Hidden("userId", user.Id)
+
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title" id="@string.Format("tDeleteModalLabel-{0}", user.Id)">删除用户
+                                            </h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            确定要删除 <strong>@user.UserName</strong> ？
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                            <button class="btn btn-primary" type="submit">确定</button>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                    </td>
                 </tr>
             }
         </tbody>

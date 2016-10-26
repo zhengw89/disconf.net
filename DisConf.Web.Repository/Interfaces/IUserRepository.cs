@@ -8,6 +8,8 @@ namespace DisConf.Web.Repository.Interfaces
 
         bool Create(User user);
 
+        bool Delete(int id);
+
         User GetByUserName(string userName);
 
         PageList<User> GetByCondition(int pageIndex, int pageSize);

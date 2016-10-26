@@ -10,5 +10,7 @@ namespace DisConf.Web.Service.Interfaces
         BizResult<PageList<User>> GetByCondition(int pageIndex, int pageSize);
 
         BizResult<bool> CreateUser(string userName, string password);
+
+        BizResult<bool> DeleteUser(int userId);
     }
 }
