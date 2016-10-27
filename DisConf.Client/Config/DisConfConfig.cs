@@ -9,8 +9,10 @@ namespace DisConf.Client.Config
     public class DisConfConfig : ConfigurationSection
     {
         private const string HostPropertyName = "host",
-            RetryTimesPropertyName = "retryTimes",
-            RetrySleepSecondPropertyName = "retrySleepSeconds",
+            ApiRetryTimesPropertyName = "apiRetryTimes",
+            ApiRetrySleepSecondPropertyName = "apiRetrySleepSeconds",
+            ZkRetrySleepSecondsPropertyName = "zkRetrySleepSeconds",
+            ZkConnectionTimeoutSecondsPropertyName = "zkConnectionTimeoutSeconds",
             LocalPathPropertyName = "localPath",
             AppPropertyName = "app",
             EnvPropertyName = "env",
@@ -30,21 +32,41 @@ namespace DisConf.Client.Config
         /// <summary>
         /// Config配置站点请求重试次数
         /// </summary>
-        [ConfigurationProperty(RetryTimesPropertyName, IsRequired = true)]
-        public int RetryTimes
+        [ConfigurationProperty(ApiRetryTimesPropertyName, IsRequired = true)]
+        public int ApiRetryTimes
         {
-            get { return Convert.ToInt32(base[RetryTimesPropertyName]); }
-            set { base[RetryTimesPropertyName] = value; }
+            get { return Convert.ToInt32(base[ApiRetryTimesPropertyName]); }
+            set { base[ApiRetryTimesPropertyName] = value; }
         }
 
         /// <summary>
         /// Config配置站点请求重试间隔秒
         /// </summary>
-        [ConfigurationProperty(RetrySleepSecondPropertyName, IsRequired = true)]
-        public int RetrySleepSeconds
+        [ConfigurationProperty(ApiRetrySleepSecondPropertyName, IsRequired = true)]
+        public int ApiRetrySleepSeconds
         {
-            get { return Convert.ToInt32(base[RetrySleepSecondPropertyName]); }
-            set { base[RetrySleepSecondPropertyName] = value; }
+            get { return Convert.ToInt32(base[ApiRetrySleepSecondPropertyName]); }
+            set { base[ApiRetrySleepSecondPropertyName] = value; }
+        }
+
+        /// <summary>
+        /// Zookeeper连接间隔秒
+        /// </summary>
+        [ConfigurationProperty(ZkRetrySleepSecondsPropertyName, IsRequired = true)]
+        public int ZkRetrySleepSeconds
+        {
+            get { return Convert.ToInt32(base[ZkRetrySleepSecondsPropertyName]); }
+            set { base[ZkRetrySleepSecondsPropertyName] = value; }
+        }
+
+        /// <summary>
+        /// Zookeeper连接超时
+        /// </summary>
+        [ConfigurationProperty(ZkConnectionTimeoutSecondsPropertyName, IsRequired = true)]
+        public int ZkConnectionTimeoutSeconds
+        {
+            get { return Convert.ToInt32(base[ZkConnectionTimeoutSecondsPropertyName]); }
+            set { base[ZkConnectionTimeoutSecondsPropertyName] = value; }
         }
 
         /// <summary>

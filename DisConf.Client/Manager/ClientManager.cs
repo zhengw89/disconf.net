@@ -79,7 +79,7 @@ namespace DisConf.Client.Manager
                 return false;
             }
 
-            ApiManager.Instance.Initialize(this._config.Host, this._config.RetryTimes, this._config.RetrySleepSeconds);
+            ApiManager.Instance.Initialize(this._config.Host, this._config.ApiRetryTimes, this._config.ApiRetrySleepSeconds);
 
             if (!ConfigManager.Instance.Initialize(this._config.LocalPath, this._config.OnlyLocal))
             {
@@ -112,7 +112,8 @@ namespace DisConf.Client.Manager
                 ZookeeperManager.Instance.NodeAdded += Instance_NodeAdded;
                 ZookeeperManager.Instance.NodeRemove += Instance_NodeRemove;
 
-                if (!ZookeeperManager.Instance.Initialize(this._config.ZkHost, this._config.App, this._config.Env))
+                if (!ZookeeperManager.Instance.Initialize(this._config.ZkHost, this._config.App, this._config.Env,
+                    this._config.ZkRetrySleepSeconds, this._config.ZkConnectionTimeoutSeconds))
                 {
                     Log.Error("zookeeper初始化失败");
                     return false;

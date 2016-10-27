@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using DisConf.Web.Repository.Factory;
 using DisConf.Web.Repository.Interfaces;
 using DisConf.Web.Service.Zk;
@@ -37,19 +38,38 @@ namespace DisConf.Web.Service
 
                     using (var zk = new ZooKeeper(zookeeperHost, new TimeSpan(0, 0, 0, 50000), null))
                     {
-                        foreach (var app in apps)
+                        //验证连接状态
+                        for (int i = 0; i < 3; i++)
                         {
-                            foreach (var env in envs)
+                            if (Equals(zk.State, ZooKeeper.States.CONNECTED))
                             {
-                                var configs = configRepository.GetByAppAndEnv(app.Id, env.Id);
-
-                                zkInitializer.App = app.Name;
-                                zkInitializer.Env = env.Name;
-                                zkInitializer.Configs = configs;
-                                zkInitializer.ZooKeeper = zk;
-
-                                zkInitializer.Initialize();
+                                break;
                             }
+                            else
+                            {
+                                Thread.Sleep(new TimeSpan(0, 0, 1));
+                            }
+                        }
+                        if (Equals(zk.State, ZooKeeper.States.CONNECTED))
+                        {
+                            foreach (var app in apps)
+                            {
+                                foreach (var env in envs)
+                                {
+                                    var configs = configRepository.GetByAppAndEnv(app.Id, env.Id);
+
+                                    zkInitializer.App = app.Name;
+                                    zkInitializer.Env = env.Name;
+                                    zkInitializer.Configs = configs;
+                                    zkInitializer.ZooKeeper = zk;
+
+                                    zkInitializer.Initialize();
+                                }
+                            }
+                        }
+                        else
+                        {
+                            throw new InvalidOperationException();
                         }
                     }
                 }

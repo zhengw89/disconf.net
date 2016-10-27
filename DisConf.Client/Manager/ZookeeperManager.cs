@@ -34,17 +34,10 @@ namespace DisConf.Client.Manager
 
         #endregion
 
-
-        private const int RetryPeriodSeconds = 2;
-
         /// <summary>
         /// zookeeper会话超时
         /// </summary>
         private static readonly TimeSpan SessionTimeOutSpan = new TimeSpan(0, 0, 10);
-        /// <summary>
-        /// zookeeper连接超时
-        /// </summary>
-        private static readonly TimeSpan ConnectionTimeOutSpan = new TimeSpan(0, 0, 3);
 
         private static readonly object LockObj = new object();
         private static ZookeeperManager _manager;
@@ -66,6 +59,8 @@ namespace DisConf.Client.Manager
             }
         }
 
+        private int _retrySleepSeconds, _connectionTimeoutSeconds;
+
         private string _host, _app, _env;
         private string _addPath, _delPath;
 
@@ -86,12 +81,16 @@ namespace DisConf.Client.Manager
         /// <param name="host">Zookeeper Host</param>
         /// <param name="app">APP名称</param>
         /// <param name="env">ENV名称</param>
+        /// <param name="retrySleepSeconds">连接间隔时间</param>
+        /// <param name="connectionTimeoutSeconds">连接超时时间</param>
         /// <returns></returns>
-        public bool Initialize(string host, string app, string env)
+        public bool Initialize(string host, string app, string env, int retrySleepSeconds, int connectionTimeoutSeconds)
         {
             this._host = host;
             this._app = app;
             this._env = env;
+            this._retrySleepSeconds = retrySleepSeconds;
+            this._connectionTimeoutSeconds = connectionTimeoutSeconds;
 
             this._addPath = ZooPathManager.GetAddPath(app, env);
             this._delPath = ZooPathManager.GetDelPath(app, env);
@@ -127,7 +126,7 @@ namespace DisConf.Client.Manager
             this._zk = new ZooKeeper(this._host, SessionTimeOutSpan, this);
 
             this._countdown = new CountdownEvent(1);
-            this._countdown.Wait(ConnectionTimeOutSpan);
+            this._countdown.Wait(new TimeSpan(0, 0, 0, this._connectionTimeoutSeconds));
         }
 
         /// <summary>
@@ -141,6 +140,11 @@ namespace DisConf.Client.Manager
                 {
                     try
                     {
+                        //if (this._zk.State.Equals(ZooKeeper.States.CONNECTED))
+                        //{
+                        //    break;
+                        //}
+
                         if (!this._zk.State.Equals(ZooKeeper.States.CLOSED))
                         {
                             break;
@@ -152,7 +156,7 @@ namespace DisConf.Client.Manager
                     }
                     catch (Exception)
                     {
-                        Thread.Sleep(RetryPeriodSeconds * 1000);
+                        Thread.Sleep(_retrySleepSeconds * 1000);
                     }
                 }
             }
