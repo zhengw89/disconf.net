@@ -25,11 +25,9 @@ namespace DisConf.Web.Helper.CustomConfig
                         if (string.IsNullOrEmpty(_zookeeperHost))
                         {
                             var disconfCon = ConfigurationManager.GetSection(DisConfConfigSectionName) as DisConfWebConfigSection;
-                            if (disconfCon == null || disconfCon.Zookeepers == null || disconfCon.Zookeepers.Count == 0) return null;
+                            if (disconfCon == null || string.IsNullOrEmpty(disconfCon.ConnectString)) return null;
 
-                            _zookeeperHost = disconfCon.Zookeepers[0].Host;
-
-
+                            _zookeeperHost = disconfCon.ConnectString;
                         }
                     }
                 }
