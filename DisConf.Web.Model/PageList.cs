@@ -34,5 +34,13 @@ namespace DisConf.Web.Model
         {
             return this.Items.GetEnumerator();
         }
+
+        public void CopyPageInfo(IPageList pageList)
+        {
+            this.CurrentPage = pageList.CurrentPage;
+            this.TotalItems = pageList.TotalItems;
+            this.TotalPages = pageList.TotalPages;
+            this.ItemsPerPage = pageList.ItemsPerPage;
+        }
     }
 }

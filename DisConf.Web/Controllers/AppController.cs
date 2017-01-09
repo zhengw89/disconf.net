@@ -89,7 +89,7 @@ namespace DisConf.Web.Controllers
             }
 
             var configData = new PageList<ConfigViewModel>();
-
+            configData.CopyPageInfo(configs.Data);
             foreach (var config in configs.Data)
             {
                 var con = new ConfigViewModel(config)
