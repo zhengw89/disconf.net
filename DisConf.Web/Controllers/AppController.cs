@@ -22,7 +22,7 @@ namespace DisConf.Web.Controllers
         #region Views
 
         [HttpGet]
-        public ActionResult AppList(int pageIndex = 1, int pageSize = 10)
+        public ActionResult AppList([Bind(Prefix = "appsPageIndex")]int pageIndex = 1, int pageSize = 10)
         {
             var appService = base.ResolveService<IAppService>();
             var apps = appService.GetByCondition(pageIndex, pageSize);
@@ -31,7 +31,7 @@ namespace DisConf.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult App(string appName, string envName, int pageIndex = 1, int pageSize = 10)
+        public ActionResult App(string appName, string envName, [Bind(Prefix = "appDetailPageIndex")] int pageIndex = 1, int pageSize = 10)
         {
             #region App
 
@@ -236,7 +236,7 @@ namespace DisConf.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult ConfigLogs(string appName, string envName, string configName, int pageIndex = 1, int pageSize = 10)
+        public ActionResult ConfigLogs(string appName, string envName, string configName, [Bind(Prefix = "clPageIndex")]int pageIndex = 1, int pageSize = 10)
         {
             var app = base.ResolveService<IAppService>().GetByName(appName).Data;
             var env = base.ResolveService<IEnvService>().GetEnvByName(envName).Data;

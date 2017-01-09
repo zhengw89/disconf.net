@@ -37,6 +37,6 @@ else
     @Html.Partial("PaginationPartialView", new PaginationViewModel()
     {
         PagedList = Model.Data,
-        GenerateUrlFunc = (index) => Url.Action("AppList", new { pageIndex = index })
+        GenerateUrlFunc = (index) => Url.Action("AppList", new { appsPageIndex = index })
     })
 }

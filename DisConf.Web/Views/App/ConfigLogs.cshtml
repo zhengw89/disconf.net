@@ -31,5 +31,5 @@
 @Html.Partial("PaginationPartialView", new PaginationViewModel()
 {
     PagedList = Model.ConfigLogs,
-    GenerateUrlFunc = (index) => Url.Action("ConfigLogs", new { appName = Model.AppName, envName = Model.EnvName, configName = Model.ConfigName, pageIndex = index })
+    GenerateUrlFunc = (index) => Url.Action("ConfigLogs", new { appName = Model.AppName, envName = Model.EnvName, configName = Model.ConfigName, clPageIndex = index })
 })

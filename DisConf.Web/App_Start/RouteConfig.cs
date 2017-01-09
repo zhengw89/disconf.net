@@ -16,8 +16,8 @@ namespace DisConf.Web
 
             routes.MapRoute(
                 name: "Default",
-                url: "{controller}/{action}/{pageIndex}",
-                defaults: new { controller = "App", action = "AppList", pageIndex = UrlParameter.Optional }
+                url: "{controller}/{action}",
+                defaults: new { controller = "App", action = "AppList" }
             );
         }
 
@@ -40,8 +40,8 @@ namespace DisConf.Web
         {
             routes.MapRoute(
                 name: "Apps",
-                url: "Apps/{pageIndex}",
-                defaults: new { controller = "App", action = "AppList", pageIndex = UrlParameter.Optional }
+                url: "Apps/{appsPageIndex}",
+                defaults: new { controller = "App", action = "AppList", appsPageIndex = UrlParameter.Optional }
             );
 
             routes.MapRoute(
@@ -58,8 +58,8 @@ namespace DisConf.Web
 
             routes.MapRoute(
                 name: "AppDetail",
-                url: "Detail/{appName}/{envName}/{pageIndex}",
-                defaults: new { controller = "App", action = "App", appName = UrlParameter.Optional, envName = UrlParameter.Optional, pageIndex = UrlParameter.Optional }
+                url: "Detail/{appName}/{envName}/{appDetailPageIndex}",
+                defaults: new { controller = "App", action = "App", appName = UrlParameter.Optional, envName = UrlParameter.Optional, appDetailPageIndex = UrlParameter.Optional }
             );
         }
 
@@ -91,8 +91,8 @@ namespace DisConf.Web
 
             routes.MapRoute(
                name: "ConfigLogs",
-               url: "ConfigLogs/{appName}/{envName}/{configName}/{pageIndex}",
-               defaults: new { controller = "App", action = "ConfigLogs", appName = UrlParameter.Optional, envName = UrlParameter.Optional, configName = UrlParameter.Optional, pageIndex = UrlParameter.Optional }
+               url: "ConfigLogs/{appName}/{envName}/{configName}/{clPageIndex}",
+               defaults: new { controller = "App", action = "ConfigLogs", appName = UrlParameter.Optional, envName = UrlParameter.Optional, configName = UrlParameter.Optional, clPageIndex = UrlParameter.Optional }
             );
         }
 
@@ -100,8 +100,8 @@ namespace DisConf.Web
         {
             routes.MapRoute(
                 name: "Users",
-                url: "Users/{pageIndex}",
-                defaults: new { controller = "User", action = "Users", pageIndex = UrlParameter.Optional }
+                url: "Users/{usersPageIndex}",
+                defaults: new { controller = "User", action = "Users", usersPageIndex = UrlParameter.Optional }
             );
 
             routes.MapRoute(

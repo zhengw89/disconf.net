@@ -13,7 +13,7 @@ namespace DisConf.Web.Controllers
         #region View
 
         [HttpGet]
-        public ActionResult Users(int pageIndex = 1, int pageSize = 10)
+        public ActionResult Users([Bind(Prefix = "usersPageIndex")]int pageIndex = 1, int pageSize = 10)
         {
             var service = base.ResolveService<IUserService>();
             var result = service.GetByCondition(pageIndex, pageSize);
