@@ -8,27 +8,28 @@ namespace DisConf.Web.Service.Zk
     {
         public static bool TryGetZooKeeperConnection(string host, out ZooKeeper zk)
         {
-            zk = new ZooKeeper(host, new TimeSpan(0, 0, 5, 0), null);
+            return TryGetZooKeeperConnection(host, out zk, new TimeSpan(0, 0, 5, 0), 3, new TimeSpan(0, 0, 1));
+        }
 
-            int retry = 3;
-            for (int i = 0; i < retry; i++)
+        public static bool TryGetZooKeeperConnection(string host, out ZooKeeper zk, TimeSpan zkSessionTimeout, int maxrecheckTime, TimeSpan recheckTimeSpan)
+        {
+            zk = new ZooKeeper(host, zkSessionTimeout, null);
+
+            for (int i = 0; i < maxrecheckTime; i++)
             {
                 if (Equals(zk.State, ZooKeeper.States.CONNECTED))
                 {
-                    break;
+                    return true;
                 }
                 else
                 {
-                    Thread.Sleep(new TimeSpan(0, 0, 1));
+                    Thread.Sleep(recheckTimeSpan);
                 }
             }
-            if (!Equals(zk.State, ZooKeeper.States.CONNECTED))
-            {
-                zk = null;
-                return false;
-            }
 
-            return true;
+            zk.Dispose();
+            zk = null;
+            return false;
         }
     }
 }
