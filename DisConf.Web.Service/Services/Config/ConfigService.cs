@@ -139,20 +139,6 @@ namespace DisConf.Web.Service.Services.Config
             });
         }
 
-        public int GetSyncCount(string app, string env, string config, string value)
-        {
-            ZooKeeper zk = null;
-            if (ZkHelper.TryGetZooKeeperConnection(this.Config.ZookeeperHost, out zk))
-            {
-                using (zk)
-                {
-                    return this.GetSyncCount(zk, app, env, config, value);
-                }
-            }
-
-            return -1;
-        }
-
         public int GetSyncCount(ZooKeeper zk, string app, string env, string config, string value)
         {
             int count = 0;

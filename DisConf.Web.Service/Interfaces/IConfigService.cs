@@ -25,8 +25,6 @@ namespace DisConf.Web.Service.Interfaces
 
         BizResult<PageList<ConfigLog>> GetConfigLogs(int configId, int pageIndex, int pageSize);
 
-        int GetSyncCount(string app, string env, string config, string value);
-
         int GetSyncCount(ZooKeeper zk, string app, string env, string config, string value);
     }
 }

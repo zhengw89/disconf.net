@@ -2,12 +2,15 @@
 using System.Linq;
 using System.Web.Mvc;
 using DisConf.Web.Controllers.Base;
+using DisConf.Web.Helper.CustomConfig;
 using DisConf.Web.Helper.CustomResult;
 using DisConf.Web.Model;
 using DisConf.Web.Models.App;
 using DisConf.Web.Models.Config;
 using DisConf.Web.Service.Interfaces;
 using DisConf.Web.Service.Model;
+using DisConf.Web.Service.Zk;
+using ZooKeeperNet;
 
 namespace DisConf.Web.Controllers
 {
@@ -90,14 +93,21 @@ namespace DisConf.Web.Controllers
 
             var configData = new PageList<ConfigViewModel>();
             configData.CopyPageInfo(configs.Data);
-            foreach (var config in configs.Data)
+            ZooKeeper zk = null;
+            if (ZkHelper.TryGetZooKeeperConnection(WebConfigHelper.ZookeeperHost, out zk))
             {
-                var con = new ConfigViewModel(config)
+                using (zk)
                 {
-                    SyncCount = configService.GetSyncCount(appName, cEnv.Name, config.Name, config.Value)
-                };
+                    foreach (var config in configs.Data)
+                    {
+                        var con = new ConfigViewModel(config)
+                        {
+                            SyncCount = configService.GetSyncCount(zk, appName, cEnv.Name, config.Name, config.Value)
+                        };
 
-                configData.Add(con);
+                        configData.Add(con);
+                    }
+                }
             }
 
             #endregion
