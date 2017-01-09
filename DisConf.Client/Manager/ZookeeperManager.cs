@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using System.Threading;
 using DisConf.Utility.Path;
+using Org.Apache.Zookeeper.Data;
 using ZooKeeperNet;
 
 namespace DisConf.Client.Manager
@@ -116,6 +119,24 @@ namespace DisConf.Client.Manager
             this._zk.Exists(path, this);
         }
 
+        public string Create(string path, string value, IEnumerable<ACL> acl, CreateMode createMode)
+        {
+            if (!this._initlized)
+            {
+                throw new InvalidOperationException();
+            }
+            return this._zk.Create(path, Encoding.Default.GetBytes(value), acl, createMode);
+        }
+
+        public Stat SetData(string path, string value, int version)
+        {
+            if (!this._initlized)
+            {
+                throw new InvalidOperationException();
+            }
+            return this._zk.SetData(path, Encoding.Default.GetBytes(value), version);
+        }
+
         /// <summary>
         /// 连接Zookeeper
         /// </summary>
@@ -164,7 +185,7 @@ namespace DisConf.Client.Manager
 
         public void Process(WatchedEvent @event)
         {
-            Log.InfoFormat("监控变化 {0}", @event.ToString());
+            Log.InfoFormat("监控变化 {0}", @event);
 
             if (@event.State == KeeperState.SyncConnected && @event.Type == EventType.None)
             {
@@ -184,7 +205,7 @@ namespace DisConf.Client.Manager
                     if (this.NodeAdded != null)
                     {
                         var data = _zk.GetData(this._addPath, false, null);
-                        this.NodeAdded(this, System.Text.Encoding.Default.GetString(data));
+                        this.NodeAdded(this, Encoding.Default.GetString(data));
                     }
                 }
                 else if (@event.Path.Equals(this._delPath))
@@ -192,7 +213,7 @@ namespace DisConf.Client.Manager
                     if (this.NodeRemove != null)
                     {
                         var data = _zk.GetData(this._delPath, false, null);
-                        this.NodeRemove(this, System.Text.Encoding.Default.GetString(data));
+                        this.NodeRemove(this, Encoding.Default.GetString(data));
                     }
                 }
                 else if (this.NodeValueChangedHandler != null)

@@ -19,5 +19,10 @@ namespace DisConf.Demo
 
             ClientManager.Instance.Initialize();
         }
+
+        protected void Application_End()
+        {
+            ClientManager.Instance.Dispose();
+        }
     }
 }

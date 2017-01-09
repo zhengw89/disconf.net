@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Security.Permissions;
-using System.Threading;
+using System.Text;
 using DisConf.Utility.Path;
 using DisConf.Web.Model;
 using DisConf.Web.Service.Interfaces;
 using DisConf.Web.Service.Model;
 using DisConf.Web.Service.Services.Config.ConfigLogOperator;
 using DisConf.Web.Service.Services.Config.ConfigOperator;
+using DisConf.Web.Service.Zk;
 using ZooKeeperNet;
 
 namespace DisConf.Web.Service.Services.Config
@@ -111,29 +110,16 @@ namespace DisConf.Web.Service.Services.Config
 
             if (configs.Data != null && configs.Data.Any())
             {
-                using (var zk = new ZooKeeper(this.Config.ZookeeperHost, new TimeSpan(0, 0, 5, 0), null))
+                ZooKeeper zk = null;
+                if (ZkHelper.TryGetZooKeeperConnection(this.Config.ZookeeperHost, out zk))
                 {
-                    int retry = 3;
-                    for (int i = 0; i < retry; i++)
+                    using (zk)
                     {
-                        if (Equals(zk.State, ZooKeeper.States.CONNECTED))
+                        foreach (var config in configs.Data)
                         {
-                            break;
+                            var nodePath = ZooPathManager.GetPath(appName, envName, config.Name);
+                            zk.SetData(nodePath, config.Value.GetBytes(), -1);
                         }
-                        else
-                        {
-                            Thread.Sleep(new TimeSpan(0, 0, 1));
-                        }
-                    }
-                    if (!Equals(zk.State, ZooKeeper.States.CONNECTED))
-                    {
-                        return false;
-                    }
-
-                    foreach (var config in configs.Data)
-                    {
-                        var nodePath = ZooPathManager.GetPath(appName, envName, config.Name);
-                        zk.SetData(nodePath, config.Value.GetBytes(), -1);
                     }
                 }
             }
@@ -151,6 +137,36 @@ namespace DisConf.Web.Service.Services.Config
 
                 return base.ExeQueryProcess(queryer);
             });
+        }
+
+        public int GetSyncCount(string app, string env, string config, string value)
+        {
+            ZooKeeper zk = null;
+            if (ZkHelper.TryGetZooKeeperConnection(this.Config.ZookeeperHost, out zk))
+            {
+                using (zk)
+                {
+                    return this.GetSyncCount(zk, app, env, config, value);
+                }
+            }
+
+            return -1;
+        }
+
+        public int GetSyncCount(ZooKeeper zk, string app, string env, string config, string value)
+        {
+            int count = 0;
+            var nodePath = ZooPathManager.GetPath(app, env, config);
+            var children = zk.GetChildren(nodePath, null);
+            foreach (var child in children)
+            {
+                var data = zk.GetData(ZooPathManager.JoinPath(nodePath, child), null, null);
+                if (Encoding.Default.GetString(data).Equals(value))
+                {
+                    count++;
+                }
+            }
+            return count;
         }
     }
 }

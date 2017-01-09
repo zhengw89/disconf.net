@@ -31,10 +31,11 @@ else
     
     <table class="table table-striped table-hover ">
         <thead>
-            <th>ID</th>
-            <th>名称</th>
-            <th>值</th>
-            <th>操作</th>
+            <th style="width: 10%">ID</th>
+            <th style="width: 35%">名称</th>
+            <th style="width: 35%">值</th>
+            <th style="width: 10%">起效数量</th>
+            <th style="width: 10%">操作</th>
         </thead>
         <tbody>
             @if (Model.Data.Configs.Items != null)
@@ -45,6 +46,7 @@ else
                     <td>@config.Id</td>
                     <td>@Html.RouteLink(config.Name, "ConfigLogs", new { appName = Model.Data.AppInfo.Name, envName = Model.Data.CurrentEnv.Name, configName = config.Name }, new { })</td>
                     <td>@config.Value</td>
+                    <td>@config.SyncCount</td>
                     <td>
                         @Html.RouteLink("编辑值", "UpdateConfig", new
                         {

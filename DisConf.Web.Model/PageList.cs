@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 
 namespace DisConf.Web.Model
 {
-    public class PageList<T> : IPageList
+    public class PageList<T> : IEnumerable<T>, IEnumerable, IPageList
     {
         public long CurrentPage { get; set; }
 
@@ -13,5 +14,25 @@ namespace DisConf.Web.Model
         public long ItemsPerPage { get; set; }
 
         public List<T> Items { get; set; }
+
+        public PageList()
+        {
+            this.Items = new List<T>();
+        }
+
+        public void Add(T item)
+        {
+            this.Items.Add(item);
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            return this.Items.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.Items.GetEnumerator();
+        }
     }
 }

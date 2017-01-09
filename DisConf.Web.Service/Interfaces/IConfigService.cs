@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using DisConf.Web.Model;
 using DisConf.Web.Service.Model;
+using ZooKeeperNet;
 
 namespace DisConf.Web.Service.Interfaces
 {
@@ -23,5 +24,9 @@ namespace DisConf.Web.Service.Interfaces
         bool ForceRefresh(int appId, string appName, int envId, string envName);
 
         BizResult<PageList<ConfigLog>> GetConfigLogs(int configId, int pageIndex, int pageSize);
+
+        int GetSyncCount(string app, string env, string config, string value);
+
+        int GetSyncCount(ZooKeeper zk, string app, string env, string config, string value);
     }
 }

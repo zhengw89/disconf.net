@@ -30,6 +30,8 @@ namespace DisConf.Web.Controllers
         [HttpGet]
         public ActionResult App(string appName, string envName, int pageIndex = 1, int pageSize = 10)
         {
+            #region App
+
             var appService = base.ResolveService<IAppService>();
             var app = appService.GetByName(appName);
             if (app.HasError)
@@ -39,6 +41,10 @@ namespace DisConf.Web.Controllers
                     Error = app.Error
                 });
             }
+
+            #endregion
+
+            #region Env
 
             var envService = base.ResolveService<IEnvService>();
             var envs = envService.GetAllEnv();
@@ -68,6 +74,10 @@ namespace DisConf.Web.Controllers
                 cEnv = envs.Data.First();
             }
 
+            #endregion
+
+            #region Conf
+
             var configService = base.ResolveService<IConfigService>();
             var configs = configService.GetByCondition(app.Data.Id, cEnv.Id, pageIndex, pageSize);
             if (configs.HasError)
@@ -78,13 +88,28 @@ namespace DisConf.Web.Controllers
                 });
             }
 
+            var configData = new PageList<ConfigViewModel>();
+
+            foreach (var config in configs.Data)
+            {
+                var con = new ConfigViewModel(config)
+                {
+                    SyncCount = configService.GetSyncCount(appName, cEnv.Name, config.Name, config.Value)
+                };
+
+                configData.Add(con);
+            }
+
+            #endregion
+
             return View(new BizResult<AppDetailModel>()
             {
                 Data = new AppDetailModel()
                 {
                     AllEnv = envs.Data,
                     AppInfo = app.Data,
-                    Configs = configs.Data,
+                    //Configs = configs.Data,
+                    Configs = configData,
                     CurrentEnv = cEnv,
                 }
             });

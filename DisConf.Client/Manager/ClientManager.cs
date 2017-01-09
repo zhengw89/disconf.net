@@ -4,10 +4,11 @@ using System.Configuration;
 using System.Linq;
 using DisConf.Client.Config;
 using DisConf.Utility.Path;
+using ZooKeeperNet;
 
 namespace DisConf.Client.Manager
 {
-    public class ClientManager : BaseManager
+    public class ClientManager : BaseManager, IDisposable
     {
         /// <summary>
         /// 配置文件节点名称
@@ -144,7 +145,12 @@ namespace DisConf.Client.Manager
                 {
                     var item = result.Data.SingleOrDefault();
                     ConfigManager.Instance.CreateOrUpdate(item.Key, item.Value);
-                    ZookeeperManager.Instance.Watch(ZooPathManager.GetPath(this._config.App, this._config.Env, nodeName));
+
+                    var zkConfigPath = ZooPathManager.GetPath(this._config.App, this._config.Env, nodeName);
+
+                    ZookeeperManager.Instance.Watch(zkConfigPath);
+                    ZookeeperManager.Instance.Create(ZooPathManager.JoinPath(zkConfigPath, base.ManagerId),
+                        ConfigManager.Instance[nodeName], Ids.OPEN_ACL_UNSAFE, CreateMode.Ephemeral);
                 }
             }
             else
@@ -160,7 +166,11 @@ namespace DisConf.Client.Manager
             var configNames = ConfigManager.Instance.ConfigNames;
             foreach (var configName in configNames)
             {
-                ZookeeperManager.Instance.Watch(ZooPathManager.GetPath(this._config.App, this._config.Env, configName));
+                var zkConfigPath = ZooPathManager.GetPath(this._config.App, this._config.Env, configName);
+
+                ZookeeperManager.Instance.Watch(zkConfigPath);
+                ZookeeperManager.Instance.Create(ZooPathManager.JoinPath(zkConfigPath, base.ManagerId),
+                    ConfigManager.Instance[configName], Ids.OPEN_ACL_UNSAFE, CreateMode.Ephemeral);
             }
 
             ZookeeperManager.Instance.Watch(ZooPathManager.GetAddPath(this._config.App, this._config.Env));
@@ -177,6 +187,10 @@ namespace DisConf.Client.Manager
                 {
                     var item = result.Data.SingleOrDefault();
                     ConfigManager.Instance.CreateOrUpdate(item.Key, item.Value);
+
+                    var zkConfigPath = ZooPathManager.GetPath(this._config.App, this._config.Env, config);
+                    ZookeeperManager.Instance.SetData(ZooPathManager.JoinPath(zkConfigPath, base.ManagerId),
+                        ConfigManager.Instance[config], -1);
                 }
             }
             else
@@ -204,6 +218,11 @@ namespace DisConf.Client.Manager
 
                 return ConfigManager.Instance[name];
             }
+        }
+
+        public void Dispose()
+        {
+            ZookeeperManager.Instance.Dispose();
         }
     }
 }

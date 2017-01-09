@@ -3,6 +3,7 @@ using CommonProcess;
 using ZooKeeperNet;
 using System.Threading;
 using DisConf.Web.Model;
+using DisConf.Web.Service.Zk;
 
 namespace DisConf.Web.Service.Core.Process
 {
@@ -65,29 +66,18 @@ namespace DisConf.Web.Service.Core.Process
             //更新Zookeeper
             if (this.NeedUpdateZookeeper)
             {
-                using (var zk = new ZooKeeper(this.Config.ZookeeperHost, new TimeSpan(0, 0, 5, 0), null))
+                ZooKeeper zk = null;
+                if (ZkHelper.TryGetZooKeeperConnection(this.Config.ZookeeperHost, out zk))
                 {
-                    //验证连接状态
-                    for (int i = 0; i < 3; i++)
-                    {
-                        if (Equals(zk.State, ZooKeeper.States.CONNECTED))
-                        {
-                            break;
-                        }
-                        else
-                        {
-                            Thread.Sleep(new TimeSpan(0, 0, 1));
-                        }
-                    }
-                    if (Equals(zk.State, ZooKeeper.States.CONNECTED))
+                    using (zk)
                     {
                         UpdateZookeeper(zk);
                     }
-                    else
-                    {
-                        this.CacheProcessError("Zookeeper更新失败");
-                        return false;
-                    }
+                }
+                else
+                {
+                    this.CacheProcessError("Zookeeper获取链接失败");
+                    return false;
                 }
             }
 
