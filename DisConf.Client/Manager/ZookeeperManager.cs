@@ -111,7 +111,7 @@ namespace DisConf.Client.Manager
         /// <param name="path"></param>
         public void Watch(string path)
         {
-            if (!this._initlized)
+            if (!this._initlized && !this._zk.State.Equals(ZooKeeper.States.CONNECTED))
             {
                 throw new InvalidOperationException();
             }
@@ -121,7 +121,7 @@ namespace DisConf.Client.Manager
 
         public string Create(string path, string value, IEnumerable<ACL> acl, CreateMode createMode)
         {
-            if (!this._initlized)
+            if (!this._initlized && !this._zk.State.Equals(ZooKeeper.States.CONNECTED))
             {
                 throw new InvalidOperationException();
             }
@@ -130,7 +130,7 @@ namespace DisConf.Client.Manager
 
         public Stat SetData(string path, string value, int version)
         {
-            if (!this._initlized)
+            if (!this._initlized && !this._zk.State.Equals(ZooKeeper.States.CONNECTED))
             {
                 throw new InvalidOperationException();
             }

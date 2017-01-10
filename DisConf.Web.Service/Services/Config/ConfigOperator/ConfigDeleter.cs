@@ -4,6 +4,7 @@ using DisConf.Web.Model;
 using DisConf.Web.Repository.Interfaces;
 using DisConf.Web.Service.Core;
 using DisConf.Web.Service.Core.Process;
+using DisConf.Web.Service.Zk;
 using PetaPoco;
 using ZooKeeperNet;
 
@@ -77,7 +78,10 @@ namespace DisConf.Web.Service.Services.Config.ConfigOperator
             var env = this._envRepository.GetById(this._config.EnvId);
 
             var nodePath = ZooPathManager.GetPath(app.Name, env.Name, this._config.Name);
-            zk.Delete(nodePath, -1);
+            if (zk.Exists(nodePath, false) != null)
+            {
+                ZkHelper.DeleteNode(zk, nodePath);
+            }
 
             var delPath = ZooPathManager.GetDelPath(app.Name, env.Name);
             if (zk.Exists(delPath, false) == null)

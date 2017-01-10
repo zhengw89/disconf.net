@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using ZooKeeperNet;
 
@@ -30,6 +31,22 @@ namespace DisConf.Web.Service.Zk
             zk.Dispose();
             zk = null;
             return false;
+        }
+
+
+
+        public static void DeleteNode(ZooKeeper zk, string path)
+        {
+            var children = zk.GetChildren(path, false);
+            if (children != null && children.Any())
+            {
+                foreach (var child in children)
+                {
+                    DeleteNode(zk, string.Format("{0}/{1}", path.TrimEnd('/'), child));
+                }
+            }
+
+            zk.Delete(path, -1);
         }
     }
 }
