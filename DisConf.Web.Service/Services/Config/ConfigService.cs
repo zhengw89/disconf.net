@@ -103,24 +103,17 @@ namespace DisConf.Web.Service.Services.Config
             });
         }
 
-        public bool ForceRefresh(int appId, string appName, int envId, string envName)
+        public bool ForceRefresh(ZooKeeper zk, int appId, string appName, int envId, string envName)
         {
             var configs = this.GetAll(appId, envId);
             if (configs.HasError) return false;
 
             if (configs.Data != null && configs.Data.Any())
             {
-                ZooKeeper zk = null;
-                if (ZkHelper.TryGetZooKeeperConnection(this.Config.ZookeeperHost, out zk))
+                foreach (var config in configs.Data)
                 {
-                    using (zk)
-                    {
-                        foreach (var config in configs.Data)
-                        {
-                            var nodePath = ZooPathManager.GetPath(appName, envName, config.Name);
-                            zk.SetData(nodePath, config.Value.GetBytes(), -1);
-                        }
-                    }
+                    var nodePath = ZooPathManager.GetPath(appName, envName, config.Name);
+                    zk.SetData(nodePath, config.Value.GetBytes(), -1);
                 }
             }
 

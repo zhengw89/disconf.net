@@ -21,7 +21,7 @@ namespace DisConf.Web.Service.Interfaces
 
         BizResult<PageList<Config>> GetByCondition(int appId, int envId, int pageIndex, int pageSize);
 
-        bool ForceRefresh(int appId, string appName, int envId, string envName);
+        bool ForceRefresh(ZooKeeper zk, int appId, string appName, int envId, string envName);
 
         BizResult<PageList<ConfigLog>> GetConfigLogs(int configId, int pageIndex, int pageSize);
 

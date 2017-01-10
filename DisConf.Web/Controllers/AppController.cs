@@ -431,9 +431,16 @@ namespace DisConf.Web.Controllers
                 throw new NotImplementedException();
             }
 
-            if (!base.ResolveService<IConfigService>().ForceRefresh(app.Data.Id, appName, env.Data.Id, envName))
+            ZooKeeper zk = null;
+            if (ZkHelper.TryGetZooKeeperConnection(WebConfigHelper.ZookeeperHost, out zk))
             {
-                throw new NotImplementedException();
+                using (zk)
+                {
+                    if (!base.ResolveService<IConfigService>().ForceRefresh(zk, app.Data.Id, appName, env.Data.Id, envName))
+                    {
+                        throw new NotImplementedException();
+                    }
+                }
             }
 
             return RedirectToRoute("AppDetail", new { appName = appName, envName = envName, pageIndex = 1 });
