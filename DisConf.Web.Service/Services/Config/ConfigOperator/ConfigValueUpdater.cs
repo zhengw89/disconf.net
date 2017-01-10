@@ -29,6 +29,7 @@ namespace DisConf.Web.Service.Services.Config.ConfigOperator
     {
         private readonly int _id;
         private readonly string _value;
+        private string _preValue;
 
         private Web.Model.Config _config;
 
@@ -68,6 +69,7 @@ namespace DisConf.Web.Service.Services.Config.ConfigOperator
                 base.CacheProcessError("配置信息不存在");
                 return false;
             }
+            this._preValue = this._config.Value;
             this._config.Value = this._value;
 
             if (!this._configRepository.Update(this._config))
@@ -100,9 +102,19 @@ namespace DisConf.Web.Service.Services.Config.ConfigOperator
 
         protected override bool RecordLogInfo()
         {
+            var app = this._appRepository.GetById(this._config.AppId);
+            var env = this._envRepository.GetById(this._config.EnvId);
+
             if (!this._configLogRepository.Create(new ConfigLog()
             {
                 ConfigId = this._id,
+                ConfigName = this._config.Name,
+                PreValue = this._preValue,
+                CurValue = this._value,
+                AppId = app.Id,
+                AppName = app.Name,
+                EnvId = env.Id,
+                EnvName = env.Name,
                 OptTime = DateTime.Now,
                 OptType = DataOptType.Update,
                 UserId = base.User.Id,

@@ -143,9 +143,18 @@ namespace DisConf.Web.Service.Services.Config.ConfigOperator
 
         protected override bool RecordLogInfo()
         {
+            var app = this._appRepository.GetById(this._appId);
+            var env = this._envRepository.GetById(this._envId);
+
             if (!this._configLogRepository.Create(new ConfigLog()
             {
                 ConfigId = this._configId,
+                ConfigName = this._name,
+                CurValue = this._value,
+                AppId = app.Id,
+                AppName = app.Name,
+                EnvId = env.Id,
+                EnvName = env.Name,
                 OptTime = DateTime.Now,
                 OptType = DataOptType.Create,
                 UserId = base.User.Id,
