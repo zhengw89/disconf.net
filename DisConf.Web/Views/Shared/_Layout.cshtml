@@ -29,10 +29,13 @@
                     <div id="navbar" class="navbar-collapse collapse">
                         <ul class="nav navbar-nav">
                             <li>
-                                @Html.RouteLink("APP", "Apps", new { appsPageIndex = 1 })
+                                @Html.RouteLink("应用", "Apps", new { appsPageIndex = 1 })
                             </li>
                             <li>
-                                @Html.RouteLink("User", "Users", new { usersPageIndex = 1 })
+                                @Html.RouteLink("用户", "Users", new { usersPageIndex = 1 })
+                            </li>
+                            <li>
+                                @Html.RouteLink("日志", "ConfigLogs", new { clPageIndex = 1 })
                             </li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">

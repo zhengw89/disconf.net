@@ -67,7 +67,7 @@ namespace DisConf.Web
         {
             routes.MapRoute(
                 name: "CreateConfig",
-                url: "Config/Create/{appName}/{envName}",
+                url: "Config/Create/{appName}/{envName}", 
                 defaults: new { controller = "App", action = "CreateConfig", appName = UrlParameter.Optional, envName = UrlParameter.Optional }
             );
 
@@ -89,10 +89,16 @@ namespace DisConf.Web
                defaults: new { controller = "App", action = "ForceRefreshConfig", appName = UrlParameter.Optional, envName = UrlParameter.Optional }
             );
 
+            //routes.MapRoute(
+            //   name: "ConfigLogs",
+            //   url: "ConfigLogs/{appName}/{envName}/{configName}/{clPageIndex}",
+            //   defaults: new { controller = "App", action = "ConfigLogs", appName = UrlParameter.Optional, envName = UrlParameter.Optional, configName = UrlParameter.Optional, clPageIndex = UrlParameter.Optional }
+            //);
+
             routes.MapRoute(
                name: "ConfigLogs",
-               url: "ConfigLogs/{appName}/{envName}/{configName}/{clPageIndex}",
-               defaults: new { controller = "App", action = "ConfigLogs", appName = UrlParameter.Optional, envName = UrlParameter.Optional, configName = UrlParameter.Optional, clPageIndex = UrlParameter.Optional }
+               url: "ConfigLogs/{clPageIndex}",
+               defaults: new { controller = "App", action = "ConfigLogs", clPageIndex = UrlParameter.Optional }
             );
         }
 

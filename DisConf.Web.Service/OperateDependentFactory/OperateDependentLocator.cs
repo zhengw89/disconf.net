@@ -32,6 +32,7 @@ namespace DisConf.Web.Service.OperateDependentFactory
             container.Register<AppCreator>(db => new AppCreatorDependent(db));
             container.Register<AppUpdater>(db => new AppUpdaterDependent(db));
             container.Register<AppDeleter>(db => new AppDeleterDependent(db));
+            container.Register<AllAppQueryer>(db => new AllAppQueryerDependent(db));
             container.Register<AppByConditionQueryer>(db => new AppByConditionQueryerDependent(db));
             container.Register<AppByIdQueryer>(db => new AppByIdQueryerDependent(db));
             container.Register<AppByNameQueryer>(db => new AppByNameQueryerDependent(db));

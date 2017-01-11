@@ -76,6 +76,7 @@
     <Compile Include="OperateDependentFactory\OperateDependentLocator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceInitializer.cs" />
+    <Compile Include="Services\App\AppOperator\AllAppQueryer.cs" />
     <Compile Include="Services\App\AppOperator\AppByConditionQueryer.cs" />
     <Compile Include="Services\App\AppOperator\AppByIdQueryer.cs" />
     <Compile Include="Services\App\AppOperator\AppByNameQueryer.cs" />

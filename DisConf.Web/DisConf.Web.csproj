@@ -134,6 +134,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helper\CustomResult\Http404Result.cs" />
+    <Compile Include="Helper\DictionaryUtils.cs" />
     <Compile Include="Models\App\AppDetailModel.cs" />
     <Compile Include="Models\App\CreateAppModel.cs" />
     <Compile Include="Models\App\UpdateAppModel.cs" />

@@ -1,15 +1,131 @@
-﻿@using DisConf.Web.Models.Shared
+﻿@using DisConf.Web.Helper
+@using DisConf.Web.Models.Shared
 @model DisConf.Web.Models.Config.ConfigLogsModel
 @{
-    ViewBag.Title = "Config修改日志";
+    ViewBag.Title = "配置修改日志";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>@string.Format("应用程序:{0} 环境:{1} 配置项:{2} 修改日志", Model.AppName, Model.EnvName, Model.ConfigName)</h2>
+<div class="row">
+    <div class="col-md-1">
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                @{
+                    var appTxt = "全部";
+                    if (!string.IsNullOrEmpty(Model.AppName))
+                    {
+                        appTxt = Model.AppName;
+                    }
+                }
+                @appTxt <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                @{
+                    var appRouteValueDic = new RouteValueDictionary()
+                    {
+                        {"clPageIndex", "1"}
+                    };
+                    if (!string.IsNullOrEmpty(Model.EnvName))
+                    {
+                        appRouteValueDic.Add("envName", Model.EnvName);
+                    }
+                    if (!string.IsNullOrEmpty(Model.ConfigId))
+                    {
+                        appRouteValueDic.Add("configId", Model.ConfigId);
+                    }
+                    else if (!string.IsNullOrEmpty(Model.ConfigNameFuzzy))
+                    {
+                        appRouteValueDic.Add("configNameFuzzy", Model.ConfigNameFuzzy);
+                    }
+                }
+                <li>@Html.RouteLink("全部", "ConfigLogs", appRouteValueDic)</li>
+
+                @if (Model.Apps != null && Model.Apps.Any())
+                {
+                    <li class="divider"></li>
+                    foreach (var app in Model.Apps)
+                    {
+                    <li>
+                        @{
+                        var tempDic = DictionaryUtils.Clone(appRouteValueDic);
+                        tempDic.Add("appName", app.Name);
+                        }
+                        @Html.RouteLink(app.Name, "ConfigLogs", tempDic)
+                    </li>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-1">
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                @{
+                    var envTxt = "全部";
+                    if (!string.IsNullOrEmpty(Model.EnvName))
+                    {
+                        envTxt = Model.EnvName;
+                    }
+                }
+                @envTxt <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                @{
+                    var envRouteValueDic = new RouteValueDictionary()
+                    {
+                        {"clPageIndex", "1"}
+                    };
+                    if (!string.IsNullOrEmpty(Model.AppName))
+                    {
+                        envRouteValueDic.Add("appName", Model.AppName);
+                    }
+                    if (!string.IsNullOrEmpty(Model.ConfigId))
+                    {
+                        envRouteValueDic.Add("configId", Model.ConfigId);
+                    }
+                    else if (!string.IsNullOrEmpty(Model.ConfigNameFuzzy))
+                    {
+                        envRouteValueDic.Add("configNameFuzzy", Model.ConfigNameFuzzy);
+                    }
+                }
+                <li>@Html.RouteLink("全部", "ConfigLogs", envRouteValueDic)</li>
+
+                @if (Model.Envs != null && Model.Envs.Any())
+                {
+                    <li class="divider"></li>
+                    foreach (var env in Model.Envs)
+                    {
+                    <li>
+                        @{
+                        var tempDic = DictionaryUtils.Clone(envRouteValueDic);
+                        tempDic.Add("envName", env.Name);
+                        }
+                        @Html.RouteLink(env.Name, "ConfigLogs", tempDic)
+                    </li>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-6"></div>
+    <div class="col-md-4">
+        <div class="input-group">
+            <input type="text" class="form-control" value="@Model.ConfigNameFuzzy" id="cfIpt">
+            <span class="input-group-btn">
+                <button id="searchBtn" class="btn btn-default" type="button">查询</button>
+            </span>
+        </div>
+    </div>
+</div>
 
 <table class="table table-striped table-hover ">
     <thead>
         <th>用户名</th>
+        <th>应用名</th>
+        <th>环境</th>
+        <th>配置名称</th>
+        <th>原先值</th>
+        <th>当前值</th>
         <th>操作时间</th>
         <th>操作类型</th>
     </thead>
@@ -20,6 +136,25 @@
             {
             <tr>
                 <td>@log.UserName</td>
+                <td>@log.AppName</td>
+                <td>@log.EnvName</td>
+                <td>@log.ConfigName</td>
+                @if (log.PreValue == null)
+                {
+                    <td></td>
+                }
+                else
+                {
+                    <td>@log.PreValue</td>
+                }
+                @if (log.CurValue == null)
+                {
+                    <td></td>
+                }
+                else
+                {
+                    <td>@log.CurValue</td>
+                }
                 <td>@log.OptTime</td>
                 <td>@log.OptType</td>
             </tr>
@@ -31,5 +166,19 @@
 @Html.Partial("PaginationPartialView", new PaginationViewModel()
 {
     PagedList = Model.ConfigLogs,
-    GenerateUrlFunc = (index) => Url.Action("ConfigLogs", new { appName = Model.AppName, envName = Model.EnvName, configName = Model.ConfigName, clPageIndex = index })
+    GenerateUrlFunc = (index) => Url.Action("ConfigLogs", new { appName = Model.AppName, envName = Model.EnvName, configId = Model.ConfigId, configNameFuzzy = Model.ConfigNameFuzzy, clPageIndex = index })
 })
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#searchBtn").click(function () {
+
+            var appName = '@Html.Raw(Model.AppName)';
+            var envName = '@Html.Raw(Model.EnvName)';
+            var configFuzzy = $("#cfIpt").val();
+
+            var arg = '?appName=' + appName + '&envName=' + envName + '&configNameFuzzy=' + configFuzzy;
+            location.href = arg;
+        });
+    });
+</script>

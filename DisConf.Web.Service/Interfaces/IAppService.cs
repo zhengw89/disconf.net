@@ -1,4 +1,5 @@
-﻿using DisConf.Web.Model;
+﻿using System.Collections.Generic;
+using DisConf.Web.Model;
 using DisConf.Web.Service.Model;
 
 namespace DisConf.Web.Service.Interfaces
@@ -10,6 +11,8 @@ namespace DisConf.Web.Service.Interfaces
         BizResult<bool> Update(int id, string name, string description);
 
         BizResult<bool> Delete(int id);
+
+        BizResult<List<App>> GetAll();
 
         BizResult<PageList<App>> GetByCondition(int pageIndex, int pageSize);
 

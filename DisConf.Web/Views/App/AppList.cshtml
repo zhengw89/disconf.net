@@ -1,11 +1,11 @@
 ﻿@using DisConf.Web.Models.Shared
 @model DisConf.Web.Service.Model.BizResult<DisConf.Web.Model.PageList<DisConf.Web.Model.App>>
 @{
-    ViewBag.Title = "APP列表";
+    ViewBag.Title = "应用列表";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>APP列表</h2>
+<h2>应用列表</h2>
 
 @if (Model.HasError)
 {
@@ -13,7 +13,7 @@
 }
 else
 {
-    @Html.RouteLink("创建APP", "CreateApp", new { }, new { @class = "btn btn-default" })
+    @Html.RouteLink("创建应用", "CreateApp", new { }, new { @class = "btn btn-default" })
     <table class="table table-striped table-hover ">
         <thead>
             <th>ID</th>

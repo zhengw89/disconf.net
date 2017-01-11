@@ -21,14 +21,20 @@ namespace DisConf.Web.Service.Services.Config.ConfigLogOperator
 
     internal class ConfigLogByConditionQueryer : DisConfQueryProcess<PageList<ConfigLog>>
     {
-        private readonly int _configId, _pageIndex, _pageSize;
+        private readonly int? _appId, _envId, _configId;
+        private readonly string _configNameFuzzy;
+        private readonly int _pageIndex, _pageSize;
 
         private readonly IConfigLogRepository _configLogRepository;
 
-        public ConfigLogByConditionQueryer(IDisConfProcessConfig config, int configId, int pageIndex, int pageSize)
+        public ConfigLogByConditionQueryer(IDisConfProcessConfig config, int? appId, int? envId, int? configId, string configNameFuzzy, int pageIndex, int pageSize)
             : base(config)
         {
+            this._appId = appId;
+            this._envId = envId;
             this._configId = configId;
+            this._configNameFuzzy = configNameFuzzy;
+
             this._pageIndex = pageIndex;
             this._pageSize = pageSize;
 
@@ -48,7 +54,16 @@ namespace DisConf.Web.Service.Services.Config.ConfigLogOperator
 
         protected override PageList<ConfigLog> Query()
         {
-            return this._configLogRepository.GetByCondition(this._configId, this._pageIndex, this._pageSize);
+            if (this._configId.HasValue)
+            {
+                return this._configLogRepository.GetByCondition(this._appId, this._envId, this._configId,
+                    this._pageIndex,this._pageSize);
+            }
+            else
+            {
+                return this._configLogRepository.GetByCondition(this._appId, this._envId, this._configNameFuzzy,
+                    this._pageIndex, this._pageSize);
+            }
         }
     }
 }

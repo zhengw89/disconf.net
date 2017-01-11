@@ -23,7 +23,7 @@ namespace DisConf.Web.Service.Interfaces
 
         bool ForceRefresh(ZooKeeper zk, int appId, string appName, int envId, string envName);
 
-        BizResult<PageList<ConfigLog>> GetConfigLogs(int configId, int pageIndex, int pageSize);
+        BizResult<PageList<ConfigLog>> GetConfigLogs(int? appId, int? envId, int? configId, string configNameFuzzy, int pageIndex, int pageSize);
 
         int GetSyncCount(ZooKeeper zk, string app, string env, string config, string value);
     }

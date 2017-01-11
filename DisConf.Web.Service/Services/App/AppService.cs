@@ -1,4 +1,5 @@
-﻿using DisConf.Web.Model;
+﻿using System.Collections.Generic;
+using DisConf.Web.Model;
 using DisConf.Web.Service.Interfaces;
 using DisConf.Web.Service.Model;
 using DisConf.Web.Service.Services.App.AppOperator;
@@ -45,6 +46,17 @@ namespace DisConf.Web.Service.Services.App
                     id);
 
                 return base.ExeOperateProcess(deleter);
+            });
+        }
+
+        public BizResult<List<Web.Model.App>> GetAll()
+        {
+            return base.ExeProcess(db =>
+            {
+                var queryer = new AllAppQueryer(
+                    base.ResloveProcessConfig<AllAppQueryer>(db));
+
+                return base.ExeQueryProcess(queryer);
             });
         }
 

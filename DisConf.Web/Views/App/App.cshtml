@@ -1,7 +1,7 @@
 ﻿@using DisConf.Web.Models.Shared
 @model DisConf.Web.Service.Model.BizResult<DisConf.Web.Models.App.AppDetailModel>
 @{
-    ViewBag.Title = "APP配置信息";
+    ViewBag.Title = "应用配置信息";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -44,7 +44,7 @@ else
                 {
                 <tr>
                     <td>@config.Id</td>
-                    <td>@Html.RouteLink(config.Name, "ConfigLogs", new { appName = Model.Data.AppInfo.Name, envName = Model.Data.CurrentEnv.Name, configName = config.Name }, new { })</td>
+                    <td>@Html.RouteLink(config.Name, "ConfigLogs", new { appName = Model.Data.AppInfo.Name, envName = Model.Data.CurrentEnv.Name, configId = config.Id }, new { })</td>
                     <td>@config.Value</td>
                     <td>@config.SyncCount</td>
                     <td>

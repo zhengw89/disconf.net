@@ -118,7 +118,6 @@ namespace DisConf.Web.Controllers
                 {
                     AllEnv = envs.Data,
                     AppInfo = app.Data,
-                    //Configs = configs.Data,
                     Configs = configData,
                     CurrentEnv = cEnv,
                 }
@@ -236,19 +235,63 @@ namespace DisConf.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult ConfigLogs(string appName, string envName, string configName, [Bind(Prefix = "clPageIndex")]int pageIndex = 1, int pageSize = 10)
+        public ActionResult ConfigLogs(string configId, string appName, string envName, string configNameFuzzy, [Bind(Prefix = "clPageIndex")]int pageIndex = 1, int pageSize = 10)
         {
-            var app = base.ResolveService<IAppService>().GetByName(appName).Data;
-            var env = base.ResolveService<IEnvService>().GetEnvByName(envName).Data;
+            var appService = base.ResolveService<IAppService>();
+            var envService = base.ResolveService<IEnvService>();
             var configService = base.ResolveService<IConfigService>();
-            var config = configService.GetByName(app.Id, env.Id, configName).Data;
+
+            App app = null;
+            Env env = null;
+            Config config = null;
+
+            #region Current
+
+            int configIdTempValue;
+            if (string.IsNullOrEmpty(configId) || !int.TryParse(configId, out configIdTempValue))
+            {
+                if (!string.IsNullOrEmpty(appName))
+                {
+                    app = appService.GetByName(appName).Data;
+                }
+
+                if (!string.IsNullOrEmpty(envName))
+                {
+                    env = envService.GetEnvByName(envName).Data;
+                }
+            }
+            else
+            {
+                config = configService.GetById(configIdTempValue).Data;
+                app = appService.GetById(config.AppId).Data;
+                env = envService.GetEnvById(config.EnvId).Data;
+            }
+
+            int? appId = null, envId = null, configIdT = null;
+            if (app != null)
+            {
+                appId = app.Id;
+            }
+            if (env != null)
+            {
+                envId = env.Id;
+            }
+            if (config != null)
+            {
+                configIdT = config.Id;
+            }
+
+            #endregion
 
             return View(new ConfigLogsModel()
             {
-                AppName = app.Name,
-                EnvName = env.Name,
-                ConfigName = config.Name,
-                ConfigLogs = configService.GetConfigLogs(config.Id, pageIndex, pageSize).Data
+                Apps = appService.GetAll().Data,
+                Envs = envService.GetAllEnv().Data,
+                ConfigId = configId,
+                ConfigNameFuzzy = configNameFuzzy,
+                App = app,
+                Env = env,
+                ConfigLogs = configService.GetConfigLogs(appId, envId, configIdT, configNameFuzzy, pageIndex, pageSize).Data
             });
         }
 
